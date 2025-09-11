@@ -1,7 +1,7 @@
 <div class="student-details-container">
 
 
-  <h2>Attendance Details for {{ studentName || ('Student ' + studentId) }}</h2>
+  <h2>Attendance Details</h2>
 
   <div class="month-nav">
     <button (click)="prevMonth()">⬅️</button>
@@ -14,7 +14,7 @@
     <tr>
       <th>Date</th>
       <th>Status</th>
-      <th>Remark</th>
+     <!-- <th>Remark</th>-->
     </tr>
     </thead>
     <tbody>
@@ -25,7 +25,7 @@
             {{ att.attendanceStatus }}
           </span>
       </td>
-      <td>{{ att.remark || '-' }}</td>
+<!--      <td>{{ att.remark || '-' }}</td>-->
     </tr>
     </tbody> <tfoot><button appBackButton class="btn btn-secondary mb-3">Back</button></tfoot>
   </table>
