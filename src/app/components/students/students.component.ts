@@ -4,29 +4,42 @@ import {Student} from '../models/all.models'; // correct path
 import {Router, RouterLink} from '@angular/router';
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import {BackButtonDirective} from "../commons/back-button.directive";
 
 @Component({
   selector: 'app-students',
   templateUrl: './students.component.html',
   styleUrls: ['./students.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink]
+  imports: [CommonModule, FormsModule, RouterLink, BackButtonDirective]
 })
 export class StudentListComponent implements OnInit {
 
   students: Student[] = [];
-  photoFile: File | null = null;
-  photoPreview: string | null = null;
-  showCamera = false;
-  private stream: MediaStream | null = null;
 
   constructor(
-    private studentService: StudentService,
-    private router: Router) {
+    private studentService: StudentService) {
   }
 
   ngOnInit(): void {
     this.loadStudents();
+  }
+  searchText: string = '';
+
+  filteredStudents() {
+    if (!this.searchText) {
+      return this.students;
+    }
+
+    const lower = this.searchText.toLowerCase();
+
+    return this.students.filter(student =>
+      student.name?.toLowerCase().includes(lower) ||
+      student.guardianName?.toLowerCase().includes(lower) ||
+      student.surName?.toLowerCase().includes(lower) ||
+      student.maktabClass?.name?.toLowerCase().includes(lower) ||
+      student.phone?.toLowerCase().includes(lower)
+    );
   }
 
   loadStudents(): void {
@@ -44,83 +57,6 @@ export class StudentListComponent implements OnInit {
       }, (error: any) => {
         console.error('Error deleting student', error);
       });
-    }
-  }
-
-  showModal = false;
-  editingStudent: any = null;
-
-  openEditModal(student: any) {
-    this.editingStudent = {...student};
-    this.showModal = true;
-  }
-
-  closeModal() {
-    this.showModal = false;
-    this.editingStudent = null;
-  }
-
-  updateStudent() {
-    if (!this.editingStudent) return;
-
-    const formData = new FormData();
-    formData.append('student', new Blob([JSON.stringify(this.editingStudent)], {type: 'application/json'}));
-
-    if (this.photoPreview) {
-      formData.append('photo', this.photoPreview);
-    }
-
-    this.studentService.updateStudent(formData).subscribe({
-      next: (updatedStudent) => {
-        const index = this.students.findIndex(s => s.id === updatedStudent.id);
-        if (index !== -1) {
-          this.students[index] = updatedStudent;
-        }
-        this.closeModal();
-      },
-      error: (err) => console.error('Update failed:', err)
-    });
-  }
-
-  onFileSelected(event: any) {
-    const file = event.target.files[0];
-    if (file) {
-      this.photoFile = file;
-
-      // Preview the image
-      const reader = new FileReader();
-      reader.onload = e => this.photoPreview = reader.result as string;
-      reader.readAsDataURL(file);
-    }
-  }
-
-  openCamera() {
-    this.showCamera = true;
-    navigator.mediaDevices.getUserMedia({video: true}).then(stream => {
-      this.stream = stream;
-      const videoElement = document.querySelector('video') as HTMLVideoElement;
-      if (videoElement) {
-        videoElement.srcObject = stream;
-      }
-    }).catch(err => {
-      console.error('Camera access denied', err);
-    });
-  }
-
-  capturePhoto(videoElement: HTMLVideoElement) {
-    const canvas = document.createElement('canvas');
-    canvas.width = videoElement.videoWidth;
-    canvas.height = videoElement.videoHeight;
-    const ctx = canvas.getContext('2d');
-    ctx?.drawImage(videoElement, 0, 0, canvas.width, canvas.height);
-    this.photoPreview = canvas.toDataURL('image/png');
-    this.closeCamera();
-  }
-
-  closeCamera() {
-    this.showCamera = false;
-    if (this.stream) {
-      this.stream.getTracks().forEach(track => track.stop());
     }
   }
 }

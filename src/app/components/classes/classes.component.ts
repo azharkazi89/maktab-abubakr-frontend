@@ -5,14 +5,15 @@ import {CommonModule} from "@angular/common";
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {SubjectService} from "../subjects/subjects.service";
 import {TeacherService} from "../teachers/teachers.service";
-import {StudentService} from "../students/students.service"; // correct path
+import {StudentService} from "../students/students.service";
+import {BackButtonDirective} from "../commons/back-button.directive"; // correct path
 
 @Component({
   selector: 'app-classes',
   templateUrl: './classes.component.html',
   styleUrls: ['./classes.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule]
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, BackButtonDirective]
 })
 export class ClassesComponent implements OnInit {
 

@@ -3,6 +3,7 @@ import { UploadService } from './upload.service';
 import {ManualData} from '../models/all.models'
 import {Router} from "@angular/router";
 import {CommonModule} from "@angular/common";
+import {BackButtonDirective} from "../commons/back-button.directive";
 
 @Component({
   selector: 'app-upload',
@@ -10,7 +11,8 @@ import {CommonModule} from "@angular/common";
   styleUrls: ['./upload.component.css'],
   standalone: true,
   imports: [
-    CommonModule
+    CommonModule,
+    BackButtonDirective
 
   ]
 })

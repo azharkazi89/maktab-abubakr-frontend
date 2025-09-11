@@ -4,14 +4,14 @@ import {TeacherService} from './teachers.service';
 import {MaktabClass, Teacher} from '../models/all.models';
 import {CommonModule} from '@angular/common';
 import {ClassService} from "../classes/class.service";
-import {HttpErrorResponse} from "@angular/common/http";
+import {BackButtonDirective} from "../commons/back-button.directive";
 
 @Component({
   selector: 'app-teachers',
   templateUrl: './teachers.component.html',
   styleUrls: ['./teachers.component.css'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule]
+  imports: [CommonModule, ReactiveFormsModule, BackButtonDirective]
 })
 export class TeacherComponent implements OnInit {
   teachers: Teacher[] = [];
@@ -21,7 +21,7 @@ export class TeacherComponent implements OnInit {
   selectedTeacherId: number | null = null;
   classes: MaktabClass[] = [];
 
-  constructor(private classService: ClassService,private teacherService: TeacherService, private fb: FormBuilder) {
+  constructor(private classService: ClassService, private teacherService: TeacherService, private fb: FormBuilder) {
   }
 
   ngOnInit(): void {
@@ -29,11 +29,13 @@ export class TeacherComponent implements OnInit {
     this.loadTeachers();
     this.initForm();
   }
+
   loadClasses() {
     this.classService.getAll().subscribe(value => {
       this.classes = value;
     });
   }
+
   loadTeachers(): void {
     this.teacherService.getAll().subscribe(data => {
       this.teachers = data;
@@ -76,9 +78,15 @@ export class TeacherComponent implements OnInit {
     const teacherData = this.teacherForm.value;
 
     if (this.teacherModalMode === 'add') {
-      this.teacherService.create(teacherData).subscribe(() => this.loadTeachers());
+      this.teacherService.create(teacherData).subscribe(() => {
+        this.loadTeachers();
+        this.loadClasses();
+      });
     } else if (this.teacherModalMode === 'edit' && this.selectedTeacherId) {
-      this.teacherService.update(this.selectedTeacherId, teacherData).subscribe(() => this.loadTeachers());
+      this.teacherService.update(this.selectedTeacherId, teacherData).subscribe(() => {
+        this.loadTeachers();
+        this.loadClasses();
+      });
     }
 
     this.closeTeacherModal();

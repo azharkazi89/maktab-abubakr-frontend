@@ -3,13 +3,13 @@ export interface Student {
   id: number;
   name: string;
   surName: string;
-  rollNo: string;
+  rollNo: number;
   maktabClass?: MaktabClass | null;
   age: number;
-  gender: 'MALE' | 'FEMALE';
+  gender: 'Male' | 'Female';
   guardianName?: string;
   phone?: string;
-  image_path?: string;
+  imagePath?: string;
   fees: Fee[];
   status: string;
   admissionDate: string;
@@ -17,13 +17,11 @@ export interface Student {
   dateOfBirth?: string;
   fatherName?: string;
   surname?: string;
-  imagePath?: string;
   whatsapp?: string;
   classId?: number;
   address?: string;
   schoolName?: string;
   parentProfession?: string;
-  preferredTime?: string;
 }
 
 // src/app/models/maktab-class.model.ts
@@ -98,14 +96,22 @@ export interface BatchFeeResponse {
 }
 
 export interface FeeDTO {
+  id: number;
   month: string;
-  amount: number;
+  year: number;
   status: string;
+  paymentDate: Date;
+  paymentMode: string;
+  recordedBy: string;
+  remark: string;
+  paidAmount: number;
 }
 
 export interface StudentFeeDTO {
   studentName: string;
   studentClass: string;
+  phone: string;
+  admissionDate: string;
   fees: FeeDTO[];
 }
 
@@ -129,4 +135,9 @@ export interface ManualData {
   feesDetail: string;
   division: string;
   dataJson?: string;
+}
+export interface AttendanceSummary {
+  total: number;
+  attended: number;
+  absent: number;
 }

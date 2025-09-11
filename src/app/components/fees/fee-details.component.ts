@@ -2,22 +2,24 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { StudentService } from '../students/students.service';
-import { Fee, Student } from '../models/all.models';
+import {Fee, FeeDTO, Student, StudentFeeDTO} from '../models/all.models';
 import {FeeService} from "./fees.service";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import {BackButtonDirective} from "../commons/back-button.directive";
 
 @Component({
   selector: 'app-student-fee-details',
   templateUrl: './fee-details.component.html',
   styleUrls: ['./fee-details.component.css'],
   standalone: true,
-  imports: [CommonModule,FormsModule]
+  imports: [CommonModule, FormsModule, BackButtonDirective]
 })
 export class StudentFeeDetailsComponent implements OnInit {
   studentId!: number;
-  student!: Student;
-  fees: Fee[] = [];
+  student: StudentFeeDTO;
+  fees: FeeDTO[] = [];
+  allFees = [];
   PAID: string='PAID';
   constructor(private route: ActivatedRoute, private router: Router, private studentService: StudentService,
               private feeService: FeeService) {}
@@ -27,20 +29,41 @@ export class StudentFeeDetailsComponent implements OnInit {
     this.getStudentFees();
   }
 
+  loadFees() {
+    // Assuming `fees` is already populated from backend
+    this.allFees = this.months.map(month => {
+      const fee = this.fees.find(f => f.month === month);
+      if (fee) {
+        return fee;
+      } else {
+        return {
+          month: month,
+          year: new Date().getFullYear(),
+          paymentDate:null,
+          paidAmount: 0,
+          status: 'UNPAID',
+          recordedBy: '',
+          paymentMode: 'PENDING',
+          remark: ''
+        };
+      }
+    });
+  }
   getStudentFees(): void {
-    this.studentService.get(this.studentId).subscribe(student => {
+    this.feeService.getStudentFees(this.studentId).subscribe(student => {
       this.student = student;
-      this.fees = student.fees; // assuming student object has fees list
+      this.fees = student.fees;
+      this.loadFees();
     });
   }
 
   months: string[] = [
-    'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+    'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec','Jan', 'Feb', 'March', 'April', 'May'
   ];
   notifyParents() {
      const phone = this.student.phone;
       const msg = `Assalamu Alaikum,\n` +
-                  `This is a fee reminder for ${this.student.name}.\n` +
+                  `This is a fee reminder for ${this.student.studentName}.\n` +
                   //(fee.status ? `Pending amount: ₹${fee.totalAmount}.\n` : '') +
                   `Please contact the office if already paid.\n` +
                   `JazakAllah Khair.\n` +
@@ -49,55 +72,43 @@ export class StudentFeeDetailsComponent implements OnInit {
       const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
       window.open(url, '_blank'); // Opens WhatsApp Web / mobile app
   }
-  newFee: Fee = {
-    id:0,
-    studentId:0,
-    month: 'January',
-    year: new Date().getFullYear(),
-    paidAmount: 0,
-    status: 'PAID',
-    paymentDate: new Date(),
-    dueDate: new Date(),
-    paymentMode: 'CASH',
-    recordedBy: '',
-    remark: ''
-  };
-  isEditing:boolean;
-  addFee(f:Fee) {
-    f.studentId = this.studentId;
+  addFee(f:FeeDTO) {
     if (f) {
-      this.feeService.create(f).subscribe(savedFee => {
-        this.fees.push(savedFee); // update local table
-        this.newFee = {
-          dueDate: new Date,
-          id: 0,
-          month: "",
-          paidAmount: 0,
-          paymentDate: new Date(),
-          paymentMode: "",
-          recordedBy: "",
-          remark: "",
-          status: "",
-          studentId: 0,
-          year: 0
-        };
+      this.feeService.create(f,this.studentId).subscribe(savedFee => {
+        this.getStudentFees();
       });
     }
   }
 
-  saveFee() {
-
-  }
-
-  cancel() {
-    //this.newFee = null;
-  }
-  deleteFee(fee: Fee) {
-    const confirmDelete = confirm(`Are you sure you want to delete the fee for ${this.student.name}?`);
-    if (confirmDelete) {
+  deleteFee(fee: FeeDTO) {
+    const confirmDelete = confirm(`Are you sure you want to delete the fee for ${this.student.studentName}?`);
+    if (confirmDelete && fee.id) {
       this.feeService.delete(fee.id).subscribe(Event => {
-        this.fees = this.fees.filter(d => d.id !== fee.id);
+        this.getStudentFees();
       });
     }
   }
+
+  editFee(f: FeeDTO) {
+    if(f){
+      this.feeService.updateFee(f).subscribe(updatedFee => {
+        const index = this.fees.findIndex(fee => fee.id === updatedFee.id);
+        if (index !== -1) {
+          this.fees[index] = updatedFee; // update local table
+        }
+      });
+      this.loadFees();
+    }
+  }
+
+  calculateTotalFeesPaid(student: StudentFeeDTO): number {
+    return student.fees.reduce((sum, fee) => sum + fee.paidAmount, 0);
+  }
+
+  calculateTotalFeesPending(student: StudentFeeDTO): number {
+    const months = this.feeService.getMonthsPassed(student.admissionDate);
+    const monthlyFee = 300;
+    return (months * monthlyFee) - this.calculateTotalFeesPaid(student)<0?0:(months * monthlyFee) - this.calculateTotalFeesPaid(student);
+  }
+
 }

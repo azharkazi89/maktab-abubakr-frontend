@@ -15,7 +15,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { StudentListComponent } from './components/students/students.component';
 import { StudentDetailsComponent } from './components/students/student-details.component';
 // Teachers
-import { TeacherListComponent } from './components/teachers/teachers.component';
+import { TeacherComponent } from './components/teachers/teachers.component';
 //import { TeacherFormComponent } from './components/teachers/teacher-form/teacher-form.component';
 
 // Classes
@@ -39,15 +39,15 @@ import { StudentFeeDetailsComponent } from './components/fees/fee-details.compon
 import { ReportsComponent } from './components/reports/reports.component';
 
 import { UploadComponent } from './components/upload/upload.component';
-import {BackButtonComponent} from "./components/commons/back-button.component";
 import {AppComponent} from "./app.component";
+import {BackButtonDirective} from "./components/commons/back-button.directive";
 
 @NgModule({
   declarations: [
   ],
   imports: [
     AppComponent,
-    BackButtonComponent,
+    BackButtonDirective,
     UploadComponent,
     ReportsComponent,
     LoginComponent,
@@ -58,7 +58,7 @@ import {AppComponent} from "./app.component";
     StudentListComponent,
     StudentDetailsComponent,
     // Teachers
-    TeacherListComponent,
+    TeacherComponent,
     // TeacherFormComponent,
 
     // Classes

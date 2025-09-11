@@ -4,13 +4,14 @@ import { AttendanceService } from './attendance.service';
 import {CommonModule, Location} from '@angular/common';
 import {Attendance} from "../models/all.models";
 import {FormsModule} from "@angular/forms";
+import {BackButtonDirective} from "../commons/back-button.directive";
 
 @Component({
   selector: 'app-student-attendance-details',
   templateUrl: './student-attendance-details.component.html',
   styleUrls: ['./student-attendance-details.component.css'],
   standalone: true,
-  imports: [CommonModule,FormsModule]
+  imports: [CommonModule, FormsModule, BackButtonDirective]
 })
 export class StudentAttendanceDetailsComponent implements OnInit {
 

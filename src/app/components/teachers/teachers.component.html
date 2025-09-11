@@ -27,6 +27,7 @@
         </td>
       </tr>
       </tbody>
+      <tfoot><button appBackButton class="btn btn-secondary mb-3">Back</button></tfoot>
     </table>
   </div>
 </div>
@@ -54,7 +55,6 @@
         <div class="form-group">
           <label>Assigned Class</label>
           <select formControlName="maktabClass" >
-            <option value="">All Classes</option>
             <option *ngFor="let cls of classes" [value]="cls.id">
               {{cls.name}} - {{cls.division}} ({{cls.timing}})
             </option>

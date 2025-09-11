@@ -15,6 +15,7 @@ import {CommonModule} from "@angular/common";
   ]
 })
 export class AppComponent {
+  title: "Anjuman Hazrat Abu Bakr Siddique (radiallahu anhu)";
   constructor(private router: Router) {}
 
   isLoginPage(): boolean {

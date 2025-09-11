@@ -1,0 +1,118 @@
+/* Base styling for the entire container */
+.container {
+  font-family: 'Cairo', sans-serif;
+}
+
+/* Tile styling */
+.islamic-tile {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.islamic-tile:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Tile header styling */
+.tile-header {
+  font-weight: bold;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+  font-size: 1.1rem;
+}
+
+/* Tile body styling */
+.tile-body {
+  padding: 15px;
+  overflow-y: auto;
+}
+
+/* Specific table styling */
+.islamic-table th, .islamic-table td {
+  vertical-align: middle;
+}
+
+/* Ensuring all tiles have similar height on larger screens */
+@media (min-width: 768px) {
+  .tile {
+    min-height: 350px;
+  }
+}
+
+/* Styling for buttons */
+.btn {
+  min-width: 120px;
+  font-weight: 500;
+}
+
+/* Additional spacing between sections */
+.mb-4 {
+  margin-bottom: 1.5rem !important;
+}
+
+.g-4 {
+  gap: 1.5rem !important;
+}
+
+/* Responsive image styling */
+.tile-body img {
+  max-height: 200px;
+  width: auto;
+}
+
+/* Scrollbar styling for better UX if content overflows */
+.tile-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tile-body::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+/* Islamic color palette overrides */
+.bg-info {
+  background-color: #17a2b8 !important; /* Info blue */
+}
+
+.bg-success {
+  background-color: #28a745 !important; /* Green */
+}
+
+.bg-warning {
+  background-color: #ffc107 !important; /* Yellow */
+}
+
+.bg-primary {
+  background-color: #007bff !important; /* Primary blue */
+}
+
+.bg-secondary {
+  background-color: #6c757d !important; /* Grey */
+}
+
+.text-white {
+  color: #ffffff !important;
+}
+
+.text-dark {
+  color: #343a40 !important;
+}
+
+/* Optional: Make the entire tile clickable */
+.tile-body p {
+  margin-bottom: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .tile {
+    min-height: auto;
+  }
+}

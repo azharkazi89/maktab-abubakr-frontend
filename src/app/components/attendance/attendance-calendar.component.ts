@@ -7,13 +7,14 @@ import {StudentService} from "../students/students.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import {BackButtonDirective} from "../commons/back-button.directive";
 
 @Component({
   selector: 'app-attendance-calendar',
   templateUrl: './attendance-calendar.component.html',
   styleUrls: ['./attendance-calendar.component.css'],
   standalone: true,
-  imports: [CommonModule,FormsModule]
+  imports: [CommonModule, FormsModule, BackButtonDirective]
 })
 export class AttendanceCalendarComponent implements OnInit {
   classes: any[] = []; // Fill from API

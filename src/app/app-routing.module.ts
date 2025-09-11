@@ -22,7 +22,7 @@ export const routes: Routes = [
 
   // Students
   { path: 'students', component: StudentListComponent },
-  { path: 'students/new', component: StudentListComponent },
+  { path: 'student/new', component: StudentDetailsComponent },
   { path: 'student/details/:id', component: StudentDetailsComponent },
 
   // Teachers

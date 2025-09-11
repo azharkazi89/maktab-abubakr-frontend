@@ -16,9 +16,6 @@ export class StudentService {
     return this.http.put<Student>(this.baseUrl, formData);
   }
   delete(id: number): Observable<void> { return this.http.delete<void>(`${this.baseUrl}${id}/delete`); }
-  getStudentFees(): Observable<StudentFeeDTO[]> {
-      return this.http.get<StudentFeeDTO[]>(this.baseUrl+`fees`);
-    }
   addStudent(student: Student): Observable<Student> {
     return this.http.post<Student>(this.baseUrl, student);
   }
