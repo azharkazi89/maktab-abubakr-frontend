@@ -9,6 +9,7 @@
     <table class="class-table">
       <thead>
       <tr>
+        <th>#</th>
         <th>Class Name</th>
         <th>Division</th>
         <th>Timing</th>
@@ -19,7 +20,8 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let cls of classes ?? []">
+      <tr *ngFor="let cls of classes ?? []; let i = index">
+        <td>{{ i + 1 }}</td>
         <td>{{ cls.name }}</td>
         <td>{{ cls.division }}</td>
         <td>{{ cls.timing }}</td>

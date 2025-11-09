@@ -19,7 +19,11 @@
       <tr *ngFor="let teacher of teachers ?? []">
         <td>{{ teacher.fullName }}</td>
         <td>{{ teacher.phone }}</td>
-        <td>{{ teacher.maktabClass }}</td>
+        <td><select>
+          <option *ngFor="let cls of teacher.maktabClass" [value]="cls">
+            {{ cls }}
+          </option>
+        </select></td>
         <td>
           <button class="btn-edit-class" (click)="openTeacherModal('edit', teacher)">
             Edit

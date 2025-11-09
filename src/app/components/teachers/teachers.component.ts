@@ -58,8 +58,8 @@ export class TeacherComponent implements OnInit {
       this.selectedTeacherId = teacher.id!;
       this.teacherForm.patchValue({
         fullName: teacher.fullName,
-        phone: teacher.phone,
-        maktabClass: teacher.maktabClass
+        phone: teacher.phone//,
+        //maktabClass: teacher.maktabClass
       });
     } else {
       this.teacherForm.reset();

@@ -14,6 +14,7 @@ import { FeesComponent } from './components/fees/fees.component';
 import { StudentFeeDetailsComponent } from './components/fees/fee-details.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { UploadComponent } from './components/upload/upload.component';
+import {AdminComponent} from "./components/admin/admin.component";
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -27,7 +28,7 @@ export const routes: Routes = [
 
   // Teachers
   { path: 'teachers', component: TeacherComponent },
-
+  { path: 'admin', component: AdminComponent},
   // Classes
   { path: 'classes', component: ClassesComponent },
   { path: 'classes/new', component: ClassesComponent },

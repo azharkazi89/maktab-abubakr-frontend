@@ -43,10 +43,14 @@ export class StudentListComponent implements OnInit {
   }
 
   loadStudents(): void {
-    this.studentService.getAll().subscribe((data: Student[]) => {
-      this.students = data;
-    }, (error: any) => {
-      console.error('Error fetching students', error);
+    this.studentService.getAll().subscribe({
+      next: (data: Student[]) => {
+        this.students = data;
+        // Optional success message
+      },
+      error: (error: any) => {
+        console.error('Error fetching students', error);
+      }
     });
   }
 
@@ -56,6 +60,7 @@ export class StudentListComponent implements OnInit {
         this.students = this.students.filter(s => s.id !== id);
       }, (error: any) => {
         console.error('Error deleting student', error);
+
       });
     }
   }

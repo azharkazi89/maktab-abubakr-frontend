@@ -136,8 +136,21 @@ export interface ManualData {
   division: string;
   dataJson?: string;
 }
+
 export interface AttendanceSummary {
   total: number;
   attended: number;
   absent: number;
+}
+
+export interface ApplicationResponse {
+  title: string;
+  appName: string;
+  version: string;
+  description: string;
+}
+
+export interface AppNotification {
+  message: string;
+  type: 'success' | 'error' | 'info' | 'warning';
 }

@@ -70,7 +70,7 @@
 }
 
 .fees-table th {
-  background-color: #2d6a4f; /* Islamic green */
+  background-color: #006666;
   color: white;
   font-size: 16px;
 }
@@ -107,6 +107,12 @@
   font-weight: bold;
   color: white;
   transition: background 0.3s ease-in-out;
+}
+
+fees-table a {
+  color: #006666;
+  font-weight: bold;
+  text-decoration: none;
 }
 
 .fees-table tr td button {
