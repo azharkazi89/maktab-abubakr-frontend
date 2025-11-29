@@ -1,19 +1,44 @@
 <div class="container mt-3">
-  <h2>Upload Excel File</h2>
+  <h2 class="page-title">📤 Upload Data</h2>
 
-  <input type="file" (change)="onFileSelected($event)" class="form-control mb-2">
+  <!-- File Upload Section -->
+  <div class="upload-section form-group">
+    <label for="fileInput">Select Excel File</label>
+    <input
+      id="fileInput"
+      type="file"
+      (change)="onFileSelected($event)"
+      class="form-control mb-2"
+      accept=".xlsx,.xls,.csv"
+    >
+    <button (click)="uploadFile()" class="btn-primary">📤 Upload File</button>
+  </div>
 
-  <button (click)="uploadFile()" class="btn btn-primary">Upload</button>
-
-  <div *ngIf="progress > 0" class="mt-2">
+  <!-- Progress Bar -->
+  <div *ngIf="progress > 0" class="mt-3">
     <div class="progress">
-      <div class="progress-bar" role="progressbar"
+      <div class="progress-bar" role="progressbar" aria-valuenow="progress" aria-valuemin="0" aria-valuemax="100"
            [style.width.%]="progress">{{progress}}%</div>
     </div>
   </div>
 
-  <p class="mt-2">{{message}}</p>
-  <div *ngIf="students.length > 0" class="mt-3">
-    <h3>Students Uploaded</h3><button appBackButton class="btn btn-secondary mb-3">Back</button>
+  <!-- Status Messages -->
+  <div *ngIf="message" class="mt-3"
+       [ngClass]="{
+         'alert-success': message.includes('success'),
+         'alert-danger': message.includes('failed'),
+         'alert-info': !message.includes('success') && !message.includes('failed')
+       }">
+    {{message}}
+  </div>
+
+  <!-- Uploaded Students List -->
+  <div *ngIf="students.length > 0" class="mt-4">
+    <h3>📋 Students Uploaded ({{ students.length }})</h3>
+  </div>
+
+  <div class="mt-4">
+    <button appBackButton class="btn-secondary">Back</button>
   </div>
 </div>
+

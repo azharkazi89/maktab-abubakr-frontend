@@ -26,14 +26,15 @@
         </select></td>
         <td>
           <button class="btn-edit-class" (click)="openTeacherModal('edit', teacher)">
-            Edit
+            ✏️ Edit
           </button>
         </td>
       </tr>
       </tbody>
-      <tfoot><button appBackButton class="btn btn-secondary mb-3">Back</button></tfoot>
     </table>
   </div>
+
+  <button appBackButton class="btn-secondary">Back</button>
 </div>
 
 <!-- Teacher Modal -->
@@ -41,7 +42,7 @@
   <div class="modal-box">
     <div class="modal-header">
       <h3>{{ teacherModalMode === 'add' ? '➕ Add Teacher' : '✏️ Edit Teacher' }}</h3>
-      <button class="btn btn-sm btn-warning" (click)="closeTeacherModal()">✖</button>
+      <button class="btn-close" (click)="closeTeacherModal()">✖</button>
     </div>
 
     <div class="modal-content">
@@ -68,9 +69,9 @@
     </div>
 
     <div class="modal-footer">
-      <button class="btn btn-secondary" (click)="closeTeacherModal()">Cancel</button>
-      <button class="btn btn-primary" (click)="saveTeacher()">
-        {{ teacherModalMode === 'add' ? 'Save' : 'Update' }}
+      <button class="btn-secondary" (click)="closeTeacherModal()">Cancel</button>
+      <button class="btn-primary" (click)="saveTeacher()">
+        {{ teacherModalMode === 'add' ? '💾 Save' : '💾 Update' }}
       </button>
     </div>
   </div>

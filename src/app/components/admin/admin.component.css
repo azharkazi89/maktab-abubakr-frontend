@@ -1,268 +1,185 @@
-/* Main container */
-.class-container {
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  border: 2px solid #d4af37; /* Gold border */
-  margin-top: 20px;
+/* Admin component uses global styles from styles.css */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--spacing-xl) var(--spacing-lg);
 }
 
-/* Page Heading */
-.class-container h2.page-title {
-  font-size: 24px;
-  color: #006666; /* Islamic green */
-  margin-bottom: 20px;
+.page-title {
+  font-size: var(--font-size-2xl);
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-xl);
   text-align: center;
-  font-weight: bold;
+  font-weight: var(--font-weight-bold);
   text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  padding-bottom: var(--spacing-md);
 }
 
-/* Add Class Button */
-.btn-add-class {
-  display: inline-block;
-  background-color: #006666;
-  color: white;
-  padding: 10px 15px;
-  font-size: 16px;
-  border: none;
-  border-radius: 8px;
-  text-decoration: none;
-  cursor: pointer;
-  transition: 0.3s;
+.page-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  border-radius: 2px;
 }
 
-.btn-add-class:hover {
-  background-color: #004d4d;
-  transform: scale(1.05);
+/* GRID LAYOUT */
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: var(--spacing-xl);
+  margin-bottom: var(--spacing-lg);
 }
 
-/* Action Bar */
-.action-bar {
-  margin-bottom: 15px;
-  text-align: right;
-}
-
-/* Table Styling */
-.class-table {
+.col-md-4,
+.col-md-6,
+.col-md-12 {
   width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
 }
 
-.class-table thead {
-  background-color: #006666;
-  color: white;
-  font-size: 16px;
+@media (min-width: 768px) {
+  .col-md-4 {
+    width: calc(33.333% - 17px);
+  }
+  .col-md-6 {
+    width: calc(50% - 13px);
+  }
 }
 
-.class-table th, .class-table td {
-  padding: 12px;
-  text-align: center;
-  border: 1px solid #ddd;
-}
-
-.class-table tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
-}
-
-.class-table tbody tr:hover {
-  background-color: #f0fdf4; /* Light green hover effect */
-}
-
-/* Buttons inside table */
-.class-table .btn-primary {
-  background-color: #006666;
-  color: white;
-  padding: 6px 10px;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.class-table .btn-primary:hover {
-  background-color: #004d4d;
-}
-
-/* Delete Button (if needed later) */
-.delete-btn {
-  background-color: #d9534f;
-  color: white;
-  padding: 6px 10px;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.delete-btn:hover {
-  background-color: #b52d2a;
-}
-
-/* Modal Overlay */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
+/* CARD STYLING */
+.admin-card {
+  background-color: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
   height: 100%;
-  background: rgba(0,0,0,0.5);
   display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
+  flex-direction: column;
+  border: 1px solid rgba(0, 102, 102, 0.1);
 }
 
-/* Modal Box */
-.modal-box {
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  width: 90%;
-  max-width: 500px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-  animation: fadeInScale 0.25s ease-in-out;
+.admin-card:hover {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--accent-color);
 }
 
-/* Modal Header */
-.modal-header {
+/* CARD HEADER */
+mat-card-header {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  color: white;
+  padding: var(--spacing-lg);
+  margin: 0;
+  border-bottom: 4px solid var(--accent-color);
+}
+
+mat-card-title {
+  color: white;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+/* CARD CONTENT */
+mat-card-content {
+  flex-grow: 1;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  flex-direction: column;
+  padding: var(--spacing-lg);
+  gap: var(--spacing-md);
 }
 
-
-/* Modal Content */
-.modal-content ul {
-  margin: 15px 0;
-  padding: 0;
-  list-style: none;
+mat-card-content p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-size: var(--font-size-base);
 }
 
-.modal-content li {
-  padding: 6px 0;
-  border-bottom: 1px solid #eee;
+/* BUTTONS */
+button[mat-raised-button] {
+  align-self: flex-start;
+  background-color: var(--accent-color) !important;
+  color: var(--primary-color) !important;
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: var(--spacing-md) var(--spacing-lg) !important;
+  border-radius: var(--radius-md);
+  transition: all var(--transition-normal);
 }
 
-.modal-footer {
-  margin-top: 12px;
-  text-align: right;
+button[mat-raised-button]:hover {
+  background-color: var(--accent-light) !important;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+  transform: translateY(-2px);
 }
 
-/* Animation */
-@keyframes fadeInScale {
+/* UTILITY CLASSES */
+.mt-3 {
+  margin-top: 1.5rem;
+}
+
+.mt-4 {
+  margin-top: 2rem;
+}
+
+.mb-4 {
+  margin-bottom: 2rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+  .container {
+    padding: var(--spacing-lg) var(--spacing-md);
+  }
+
+  .page-title {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-lg);
+  }
+
+  mat-card-content {
+    padding: var(--spacing-md);
+  }
+
+  button[mat-raised-button] {
+    width: 100%;
+    align-self: stretch;
+  }
+}
+
+/* ANIMATIONS */
+@keyframes fadeIn {
   from {
     opacity: 0;
-    transform: scale(0.9);
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
-    transform: scale(1);
+    transform: translateY(0);
   }
 }
 
-/* ============================= */
-/* Add/Edit Class Modal Styling  */
-/* ============================= */
-
-/* Reuse same modal-overlay and modal-box as existing */
-
-/* Form groups inside modal */
-.modal-content .form-group {
-  margin-bottom: 15px;
-  text-align: left;
+.admin-card {
+  animation: fadeIn 0.3s ease-out;
 }
 
-.modal-content label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 6px;
-  color: #006666; /* Islamic green for consistency */
-}
-
-.modal-content input[type="text"],
-.modal-content input[type="number"],
-.modal-content input[type="time"] {
-  width: 100%;
-  padding: 8px 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-  transition: border-color 0.3s;
-}
-
-.modal-content input:focus {
-  border-color: #006666;
-  outline: none;
-  box-shadow: 0 0 5px rgba(0, 102, 102, 0.3);
-}
-
-/* Modal Header for Add/Edit */
-.modal-header h3 {
-  font-size: 20px;
-  font-weight: bold;
-  color: #006666;
-}
-
-.modal-header .btn-warning {
-  background: #d9534f; /* red for close */
-  color: white;
-  border-radius: 50%;
-  font-size: 16px;
-  padding: 2px 8px;
-  transition: 0.3s;
-}
-
-.modal-header .btn-warning:hover {
-  background: #b52d2a;
-}
-
-/* Modal Footer Buttons */
-.modal-footer .btn {
-  padding: 8px 14px;
-  border-radius: 6px;
-  font-size: 14px;
-  margin-left: 8px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.modal-footer .btn-secondary {
-  background-color: #ccc;
-  color: #333;
-  border: none;
-}
-
-.modal-footer .btn-secondary:hover {
-  background-color: #aaa;
-}
-
-.modal-footer .btn-primary {
-  background-color: #006666;
-  color: white;
-  border: none;
-}
-
-.modal-footer .btn-primary:hover {
-  background-color: #004d4d;
-}
-
-/* Edit Class Button */
-.btn-edit-class {
-  background-color: #f0ad4e; /* Bootstrap warning orange */
-  color: white;
-  padding: 6px 12px;
-  font-size: 14px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.btn-edit-class:hover {
-  background-color: #ec971f;
-  transform: scale(1.05);
-}

@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { UploadService } from './upload.service';
 import {ManualData} from '../models/all.models'
-import {Router} from "@angular/router";
 import {CommonModule} from "@angular/common";
 import {BackButtonDirective} from "../commons/back-button.directive";
 
@@ -22,7 +21,8 @@ export class UploadComponent {
   progress = 0;
   message = '';
   students: ManualData[] =  [];
-  constructor(private uploadService: UploadService, private router: Router) {}
+
+  constructor(private uploadService: UploadService) {}
 
   onFileSelected(event: any): void {
     this.selectedFile = event.target.files[0];

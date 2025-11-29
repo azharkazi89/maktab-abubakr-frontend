@@ -14,7 +14,6 @@
         <th>Division</th>
         <th>Timing</th>
         <th>Teachers</th>
-        <!--<th>Subjects</th>-->
         <th>Student Count</th>
         <th>Actions</th>
       </tr>
@@ -26,33 +25,30 @@
         <td>{{ cls.division }}</td>
         <td>{{ cls.timing }}</td>
         <td>
-          <button class="btn btn-primary" (click)="openModal('teachers', cls.id)">
-            View Teachers
+          <button class="btn-primary" (click)="openModal('teachers', cls.id)">
+            👥 View Teachers
           </button>
         </td>
-        <!--<td>
-          <button class="btn btn-primary" (click)="openModal('subjects', cls.id)">
-            View Subjects
-          </button>
-        </td>-->
         <td>{{cls.studentCount}}</td>
         <td>
           <button class="btn-edit-class" (click)="openClassModal('edit', cls)">
-            Edit Class
+            ✏️ Edit
           </button>
         </td>
       </tr>
-      </tbody> <tfoot><button appBackButton class="btn btn-secondary mb-3">Back</button></tfoot>
+      </tbody>
     </table>
   </div>
-  <!--<app-back-button></app-back-button>-->
+
+  <button appBackButton class="btn-secondary">Back</button>
 </div>
-<!-- Modal -->
+
+<!-- View Modal -->
 <div *ngIf="isModalOpen" class="modal-overlay">
   <div class="modal-box">
     <div class="modal-header">
       <h3>{{ modalType | titlecase }}</h3>
-      <button (click)="closeModal()">✖</button>
+      <button class="btn-close" (click)="closeModal()">✖</button>
     </div>
 
     <div class="modal-content">
@@ -65,15 +61,17 @@
     </div>
 
     <div class="modal-footer">
-      <button class="btn btn-secondary" (click)="closeModal()">Close</button>
+      <button class="btn-secondary" (click)="closeModal()">Close</button>
     </div>
   </div>
 </div>
+
+<!-- Add/Edit Modal -->
 <div *ngIf="isClassModalOpen" class="modal-overlay">
   <div class="modal-box">
     <div class="modal-header">
       <h3>{{ modalMode === 'add' ? '➕ Add Class' : '✏️ Edit Class' }}</h3>
-      <button class="btn btn-sm btn-warning" (click)="closeClassModal()">✖</button>
+      <button class="btn-close" (click)="closeClassModal()">✖</button>
     </div>
 
     <div class="modal-content">
@@ -96,9 +94,9 @@
     </div>
 
     <div class="modal-footer">
-      <button class="btn btn-secondary" (click)="closeClassModal()">Cancel</button>
-      <button class="btn btn-primary" (click)="saveClass()">
-        {{ modalMode === 'add' ? 'Save' : 'Update' }}
+      <button class="btn-secondary" (click)="closeClassModal()">Cancel</button>
+      <button class="btn-primary" (click)="saveClass()">
+        {{ modalMode === 'add' ? '💾 Save' : '💾 Update' }}
       </button>
     </div>
   </div>

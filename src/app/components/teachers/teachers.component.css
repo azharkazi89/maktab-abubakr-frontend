@@ -1,158 +1,113 @@
-/* Main container */
-.class-container {
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  border: 2px solid #d4af37; /* Gold border */
-  margin-top: 20px;
+/* Teachers component uses global styles from styles.css */
+
+.container {
+  background: var(--bg-primary);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 2px solid var(--accent-color);
+  margin-top: var(--spacing-lg);
 }
 
-/* Page Heading */
-.class-container h2.page-title {
-  font-size: 24px;
-  color: #006666; /* Islamic green */
-  margin-bottom: 20px;
+.page-title {
+  font-size: var(--font-size-xl);
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-lg);
   text-align: center;
-  font-weight: bold;
+  font-weight: var(--font-weight-bold);
   text-transform: uppercase;
 }
 
 /* Add Class Button */
 .btn-add-class {
   display: inline-block;
-  background-color: #006666;
-  color: white;
-  padding: 10px 15px;
-  font-size: 16px;
+  background-color: var(--primary-color);
+  color: var(--bg-primary);
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: var(--font-size-base);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   text-decoration: none;
   cursor: pointer;
-  transition: 0.3s;
+  transition: all var(--transition-normal);
+  font-weight: var(--font-weight-medium);
 }
 
 .btn-add-class:hover {
-  background-color: #004d4d;
+  background-color: var(--primary-dark);
   transform: scale(1.05);
 }
 
 /* Action Bar */
 .action-bar {
-  margin-bottom: 15px;
+  margin-bottom: var(--spacing-lg);
   text-align: right;
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: flex-end;
 }
 
-/* Table Styling */
-.class-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
+/* Table Wrapper */
+.table-wrapper {
+  overflow-x: auto;
+  margin-bottom: var(--spacing-lg);
 }
 
-.class-table thead {
-  background-color: #006666;
-  color: white;
-  font-size: 16px;
+/* Form Group */
+.form-group {
+  margin-bottom: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
 }
 
-.class-table th, .class-table td {
-  padding: 12px;
-  text-align: center;
-  border: 1px solid #ddd;
+.form-group label {
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-base);
 }
 
-.class-table tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
+.form-group input,
+.form-group select {
+  padding: var(--spacing-md);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  transition: all var(--transition-fast);
 }
 
-.class-table tbody tr:hover {
-  background-color: #f0fdf4; /* Light green hover effect */
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 102, 102, 0.1);
 }
 
-/* Buttons inside table */
-.class-table .btn-primary {
-  background-color: #006666;
-  color: white;
-  padding: 6px 10px;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.class-table .btn-primary:hover {
-  background-color: #004d4d;
-}
-
-/* Delete Button (if needed later) */
-.delete-btn {
-  background-color: #d9534f;
-  color: white;
-  padding: 6px 10px;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.delete-btn:hover {
-  background-color: #b52d2a;
-}
-
-/* Modal Overlay */
+/* Modal Overlay - Uses global styles */
 .modal-overlay {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0,0,0,0.5);
+  background: rgba(0, 0, 0, 0.5);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
 }
 
-/* Modal Box */
+/* Modal Box - Uses global styles */
 .modal-box {
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
+  background: var(--bg-primary);
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-lg);
   width: 90%;
   max-width: 500px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+  box-shadow: var(--shadow-xl);
   animation: fadeInScale 0.25s ease-in-out;
 }
 
-/* Modal Header */
-.modal-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-
-/* Modal Content */
-.modal-content ul {
-  margin: 15px 0;
-  padding: 0;
-  list-style: none;
-}
-
-.modal-content li {
-  padding: 6px 0;
-  border-bottom: 1px solid #eee;
-}
-
-.modal-footer {
-  margin-top: 12px;
-  text-align: right;
-}
-
-/* Animation */
 @keyframes fadeInScale {
   from {
     opacity: 0;
@@ -164,105 +119,93 @@
   }
 }
 
-/* ============================= */
-/* Add/Edit Class Modal Styling  */
-/* ============================= */
-
-/* Reuse same modal-overlay and modal-box as existing */
-
-/* Form groups inside modal */
-.modal-content .form-group {
-  margin-bottom: 15px;
-  text-align: left;
+/* Modal Header - Uses global styles */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: var(--spacing-md);
 }
 
-.modal-content label {
-  display: block;
-  font-weight: bold;
-  margin-bottom: 6px;
-  color: #006666; /* Islamic green for consistency */
+.modal-header h3 {
+  font-size: var(--font-size-xl);
+  color: var(--primary-color);
+  margin: 0;
+  font-weight: var(--font-weight-bold);
+}
+
+.modal-header .btn-close {
+  background: none;
+  border: none;
+  font-size: var(--font-size-lg);
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.modal-header .btn-close:hover {
+  color: var(--danger-color);
+}
+
+/* Modal Content - Uses global styles */
+.modal-content {
+  margin-bottom: var(--spacing-lg);
+}
+
+.modal-content ul {
+  margin: var(--spacing-lg) 0;
+  padding: 0;
+  list-style: none;
+}
+
+.modal-content li {
+  padding: var(--spacing-md) 0;
+  border-bottom: 1px solid var(--border-light);
 }
 
 .modal-content input[type="text"],
 .modal-content input[type="number"],
 .modal-content input[type="time"] {
   width: 100%;
-  padding: 8px 10px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font-size: 14px;
-  transition: border-color 0.3s;
+  padding: var(--spacing-md);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  transition: all var(--transition-fast);
 }
 
 .modal-content input:focus {
-  border-color: #006666;
   outline: none;
-  box-shadow: 0 0 5px rgba(0, 102, 102, 0.3);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 102, 102, 0.1);
 }
 
-/* Modal Header for Add/Edit */
-.modal-header h3 {
-  font-size: 20px;
-  font-weight: bold;
-  color: #006666;
-}
-
-.modal-header .btn-warning {
-  background: #d9534f; /* red for close */
-  color: white;
-  border-radius: 50%;
-  font-size: 16px;
-  padding: 2px 8px;
-  transition: 0.3s;
-}
-
-.modal-header .btn-warning:hover {
-  background: #b52d2a;
-}
-
-/* Modal Footer Buttons */
-.modal-footer .btn {
-  padding: 8px 14px;
-  border-radius: 6px;
-  font-size: 14px;
-  margin-left: 8px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.modal-footer .btn-secondary {
-  background-color: #ccc;
-  color: #333;
-  border: none;
-}
-
-.modal-footer .btn-secondary:hover {
-  background-color: #aaa;
-}
-
-.modal-footer .btn-primary {
-  background-color: #006666;
-  color: white;
-  border: none;
-}
-
-.modal-footer .btn-primary:hover {
-  background-color: #004d4d;
+/* Modal Footer - Uses global styles */
+.modal-footer {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: flex-end;
+  border-top: 1px solid var(--border-light);
+  padding-top: var(--spacing-lg);
 }
 
 /* Edit Class Button */
 .btn-edit-class {
-  background-color: #f0ad4e; /* Bootstrap warning orange */
-  color: white;
-  padding: 6px 12px;
-  font-size: 14px;
+  background-color: var(--accent-color);
+  color: #fff;
+  padding: var(--spacing-sm) var(--spacing-md);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
   cursor: pointer;
-  transition: 0.3s;
+  transition: all var(--transition-normal);
+  font-weight: var(--font-weight-medium);
 }
 
 .btn-edit-class:hover {
-  background-color: #ec971f;
+  background-color: var(--accent-dark);
   transform: scale(1.05);
 }
+

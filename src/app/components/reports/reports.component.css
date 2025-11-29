@@ -1,46 +1,93 @@
-.reports-container {
-  padding: 20px;
-  font-family: 'Segoe UI', Tahoma, sans-serif;
+/* Reports component uses global styles from styles.css */
+
+.container {
+  background: var(--bg-primary);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 2px solid var(--accent-color);
+  margin-top: var(--spacing-lg);
 }
 
 .page-title {
-  font-size: 24px;
-  margin-bottom: 20px;
-  color: #146356; /* Islamic green */
-  border-bottom: 2px solid #d4af37; /* Gold accent */
-  padding-bottom: 8px;
+  font-size: var(--font-size-xl);
+  margin-bottom: var(--spacing-lg);
+  color: var(--primary-color);
+  text-align: center;
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  padding-bottom: var(--spacing-md);
 }
 
+.page-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  border-radius: 2px;
+}
+
+/* Report Filters */
 .report-filters {
   display: flex;
-  gap: 20px;
+  gap: var(--spacing-md);
   flex-wrap: wrap;
-  margin-bottom: 20px;
+  margin-bottom: var(--spacing-lg);
+  background: var(--bg-secondary);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
 }
 
 .report-filters label {
-  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
 }
 
 .report-filters select,
 .report-filters input[type="date"] {
-  padding: 6px 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
+  padding: var(--spacing-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  font-size: var(--font-size-base);
+  transition: all var(--transition-fast);
 }
 
+.report-filters select:focus,
+.report-filters input[type="date"]:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 102, 102, 0.1);
+}
+
+/* Report Section */
 .report-section {
-  background: #fff;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--spacing-lg);
 }
 
 .report-section h3 {
-  margin-bottom: 15px;
-  color: #146356;
+  margin-bottom: var(--spacing-lg);
+  color: var(--primary-color);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: var(--spacing-md);
 }
 
+/* Report Table */
 .report-table {
   width: 100%;
   border-collapse: collapse;
@@ -48,32 +95,57 @@
 
 .report-table th,
 .report-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  border: 1px solid var(--border-color);
+  padding: var(--spacing-md);
   text-align: left;
 }
 
 .report-table th {
-  background: #f3f3f3;
-  color: #333;
+  background: var(--primary-color);
+  color: var(--bg-primary);
+  font-weight: var(--font-weight-bold);
 }
 
+.report-table tbody tr:nth-child(even) {
+  background-color: var(--bg-secondary);
+}
+
+.report-table tbody tr:hover {
+  background-color: #f0fdf4;
+  transition: background-color var(--transition-fast);
+}
+
+/* No Data Message */
 .no-data {
   text-align: center;
-  color: #999;
-  margin-top: 20px;
+  color: var(--text-muted);
+  margin-top: var(--spacing-lg);
+  padding: var(--spacing-lg);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
 }
+
+/* Action Buttons */
 .action-buttons-left {
-  margin-top: 20px;
+  margin-top: var(--spacing-lg);
+  display: flex;
+  gap: var(--spacing-md);
 }
+
 .back-btn {
-  background: #146356;
-  color: white;
-  border: 2px solid #d4af37;
-  padding: 8px 18px;
-  font-size: 16px;
-  font-weight: 600;
-  border-radius: 8px;
+  background: var(--primary-color);
+  color: var(--bg-primary);
+  border: 2px solid var(--accent-color);
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  border-radius: var(--radius-md);
   cursor: pointer;
-  transition: 0.3s;
+  transition: all var(--transition-normal);
+}
+
+.back-btn:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }

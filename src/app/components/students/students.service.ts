@@ -15,6 +15,13 @@ export class StudentService {
   updateStudent(formData: FormData) {
     return this.http.put<Student>(this.baseUrl, formData);
   }
+
+  uploadStudentPhoto(studentId: number, file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.http.post<any>(`${this.baseUrl}${studentId}/upload-photo`, formData);
+  }
+
   delete(id: number): Observable<void> { return this.http.delete<void>(`${this.baseUrl}${id}/delete`); }
   addStudent(student: Student): Observable<Student> {
     return this.http.post<Student>(this.baseUrl, student);

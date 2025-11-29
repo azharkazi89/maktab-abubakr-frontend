@@ -1,23 +1,23 @@
 <div class="container mt-3">
-<h2 class="page-title">School Reports</h2>
+  <h2 class="page-title">📊 School Reports</h2>
 
   <!-- Filters -->
   <div class="report-filters">
     <label>
       Select Report:
       <select [(ngModel)]="selectedReport" (change)="loadReport()">
-        <option value="attendance">Attendance Report</option>
-        <option value="fees">Fees Report</option>
-        <option value="exam-results">Exam Results</option>
-        <option value="student-performance">Student Performance</option>
-        <option value="teacher-performance">Teacher Performance</option>
+        <option value="attendance">📋 Attendance Report</option>
+        <option value="fees">💰 Fees Report</option>
+        <option value="exam-results">✍️ Exam Results</option>
+        <option value="student-performance">⭐ Student Performance</option>
+        <option value="teacher-performance">👨‍🏫 Teacher Performance</option>
       </select>
     </label>
 
     <label>
       Class:
       <select [(ngModel)]="selectedClass" (change)="loadReport()">
-        <option value="">All</option>
+        <option value="">All Classes</option>
         <option *ngFor="let className of classes" [value]="className">{{ className }}</option>
       </select>
     </label>
@@ -32,20 +32,25 @@
   <!-- Dynamic Report -->
   <div class="report-section" *ngIf="reportData && reportData.length">
     <h3>{{ reportTitle }}</h3>
-    <table class="report-table">
-      <thead>
-      <tr>
-        <th *ngFor="let col of tableColumns">{{ col }}</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let row of reportData">
-        <td *ngFor="let col of tableColumns">{{ row[col] }}</td>
-      </tr>
-      </tbody>
-    </table>
+    <div class="table-wrapper">
+      <table class="report-table">
+        <thead>
+        <tr>
+          <th *ngFor="let col of tableColumns">{{ col }}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let row of reportData">
+          <td *ngFor="let col of tableColumns">{{ row[col] }}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 
-  <p *ngIf="!reportData || !reportData.length" class="no-data">No data available</p>
-  <button appBackButton class="btn btn-secondary mb-3">Back</button>
+  <p *ngIf="!reportData || !reportData.length" class="no-data">No data available for the selected filters</p>
+
+  <div class="action-buttons-left">
+    <button appBackButton class="btn-secondary">Back</button>
+  </div>
 </div>

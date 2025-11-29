@@ -150,6 +150,17 @@ export interface ApplicationResponse {
   description: string;
 }
 
+// src/app/models/teacher-salary.model.ts
+export interface TeacherSalary {
+  id?: number;
+  teacher: Teacher;
+  amount: number;
+  salaryMonth: Date | string;
+  paymentDate?: Date | string;
+  isPaid: boolean;
+  remarks?: string;
+}
+
 export interface AppNotification {
   message: string;
   type: 'success' | 'error' | 'info' | 'warning';

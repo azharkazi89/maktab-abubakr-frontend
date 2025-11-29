@@ -1,27 +1,60 @@
-import { Component, OnInit } from '@angular/core';
-import { TeacherSalaryService } from '../../services/teacher-salary.service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { TeacherSalaryService } from './teacher-salary.service';
+import { TeacherService } from '../teachers/teachers.service';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTableModule } from '@angular/material/table';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { TeacherSalary, Teacher } from '../models/all.models';
 
 @Component({
   selector: 'app-teacher-salary',
-  template: ``,
-  styles: [`
-    .container { max-width: 1200px; margin: auto; }
-    .mat-form-field { margin-bottom: 1rem; }
-  `]
+  templateUrl: './teacher-salary.component.html',
+  styleUrls: ['./teacher-salary.component.css'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatButtonModule,
+    MatIconModule,
+    MatTableModule,
+    MatChipsModule,
+    MatSnackBarModule,
+    MatProgressBarModule
+  ]
 })
 export class TeacherSalaryComponent implements OnInit {
+  @ViewChild('fileInput') fileInput!: ElementRef;
+
   salaryForm: FormGroup;
-  salaries: any[] = [];
-  teachers: any[] = [];
+  salaries: TeacherSalary[] = [];
+  teachers: Teacher[] = [];
   editMode = false;
   editId: number | null = null;
   displayedColumns: string[] = ['teacherName', 'amount', 'salaryMonth', 'status', 'actions'];
+  isImporting = false;
+  importProgress = 0;
 
   constructor(
     private fb: FormBuilder,
     private salaryService: TeacherSalaryService,
+    private teacherService: TeacherService,
     private snackBar: MatSnackBar
   ) {
     this.salaryForm = this.fb.group({
@@ -34,8 +67,14 @@ export class TeacherSalaryComponent implements OnInit {
 
   ngOnInit() {
     this.loadSalaries();
-    // Load teachers (you need to implement this using your teacher service)
-    // this.loadTeachers();
+    this.loadTeachers();
+  }
+
+  loadTeachers() {
+    this.teacherService.getAll().subscribe(
+      data => this.teachers = data,
+      error => console.error('Error loading teachers:', error)
+    );
   }
 
   loadSalaries() {
@@ -78,6 +117,7 @@ export class TeacherSalaryComponent implements OnInit {
       salaryMonth: salary.salaryMonth,
       remarks: salary.remarks
     });
+    window.scrollTo(0, 0);
   }
 
   deleteSalary(id: number) {
@@ -108,6 +148,60 @@ export class TeacherSalaryComponent implements OnInit {
     this.editId = null;
   }
 
+  triggerFileInput() {
+    this.fileInput.nativeElement.click();
+  }
+
+  onFileSelected(event: any) {
+    const file: File = event.target.files[0];
+    if (file) {
+      const allowedExtensions = ['xlsx', 'xls'];
+      const fileName = file.name;
+      const fileExtension = fileName.split('.').pop()?.toLowerCase() || '';
+
+      if (!allowedExtensions.includes(fileExtension)) {
+        this.showError('Please upload an Excel file (.xlsx or .xls)');
+        return;
+      }
+
+      if (file.size > 10 * 1024 * 1024) { // 10MB limit
+        this.showError('File size should not exceed 10MB');
+        return;
+      }
+
+      this.importTeacherSalaries(file);
+    }
+  }
+
+  importTeacherSalaries(file: File) {
+    this.isImporting = true;
+    this.importProgress = 0;
+
+    this.salaryService.importTeacherSalariesFromExcel(file).subscribe(
+      (response: any) => {
+        const count = response?.length || 0;
+        this.isImporting = false;
+        this.importProgress = 100;
+
+        if (count > 0) {
+          this.showSuccess(`Successfully imported ${count} teacher salary record(s)`);
+          this.loadSalaries();
+          // Reset file input
+          this.fileInput.nativeElement.value = '';
+          setTimeout(() => this.importProgress = 0, 1000);
+        } else {
+          this.showError('No records were imported from the file');
+        }
+      },
+      (error: any) => {
+        this.isImporting = false;
+        console.error('Import error:', error);
+        const errorMessage = error?.error?.message || 'Error importing teacher salaries from Excel';
+        this.showError(errorMessage);
+      }
+    );
+  }
+
   private showSuccess(message: string) {
     this.snackBar.open(message, 'Close', { duration: 3000 });
   }
@@ -116,3 +210,4 @@ export class TeacherSalaryComponent implements OnInit {
     this.snackBar.open(message, 'Close', { duration: 3000, panelClass: ['error-snackbar'] });
   }
 }
+
