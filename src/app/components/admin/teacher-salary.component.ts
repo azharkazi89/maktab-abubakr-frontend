@@ -1,7 +1,13 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { TeacherSalaryService } from './teacher-salary.service';
 import { TeacherService } from '../teachers/teachers.service';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule,
+  FormsModule        // 👈 added for [(ngModel)]
+} from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
@@ -24,6 +30,7 @@ import { TeacherSalary, Teacher } from '../models/all.models';
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,          // 👈 added
     ReactiveFormsModule,
     MatCardModule,
     MatFormFieldModule,
@@ -50,6 +57,11 @@ export class TeacherSalaryComponent implements OnInit {
   displayedColumns: string[] = ['teacherName', 'amount', 'salaryMonth', 'status', 'actions'];
   isImporting = false;
   importProgress = 0;
+
+  // 🔍 FILTERS
+  filterName: string = '';
+  filterMonth: string = '';   // from <input type="month">, e.g. "2025-11"
+  filterStatus: string = '';  // '', 'PAID', 'PENDING'
 
   constructor(
     private fb: FormBuilder,
@@ -84,6 +96,91 @@ export class TeacherSalaryComponent implements OnInit {
     );
   }
 
+  // ----------------------------------
+  // FILTERED VIEW USED BY THE TABLE
+  // ----------------------------------
+  // In HTML: *ngFor="let element of filteredSalaries"
+  get filteredSalaries(): TeacherSalary[] {
+    return this.salaries.filter(salary => {
+      let matches = true;
+
+      // Filter by teacher name (case-insensitive)
+      if (this.filterName.trim()) {
+        const name = (salary.teacher?.fullName || '').toLowerCase();
+        matches = matches && name.includes(this.filterName.trim().toLowerCase());
+      }
+
+      // Filter by month (compare "YYYY-MM")
+      if (this.filterMonth) {
+        const salaryMonth = this.normalizeMonth(salary.salaryMonth as any);
+        matches = matches && salaryMonth === this.filterMonth;
+      }
+
+      // Filter by status
+      if (this.filterStatus === 'PAID') {
+        matches = matches && !!(salary as any).isPaid;
+      } else if (this.filterStatus === 'PENDING') {
+        matches = matches && !(salary as any).isPaid;
+      }
+
+      return matches;
+    });
+  }
+
+  // Normalizes salaryMonth (Date | string) to "YYYY-MM"
+  private normalizeMonth(value: any): string {
+    if (!value) {
+      return '';
+    }
+
+    // If already "YYYY-MM" (from input type="month")
+    if (typeof value === 'string' && value.length === 7 && value.includes('-')) {
+      return value;
+    }
+
+    let date: Date;
+    if (value instanceof Date) {
+      date = value;
+    } else {
+      // Attempt parse from string
+      date = new Date(value);
+    }
+
+    if (isNaN(date.getTime())) {
+      return '';
+    }
+
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    return `${year}-${month}`;
+  }
+
+  // ----------------------------------
+  // SUMMARY CARDS (TOP SECTION)
+  // ----------------------------------
+
+  // Distinct teacher count in the filtered list
+  get totalTeachers(): number {
+    const ids = new Set(this.filteredSalaries.map(s => s.teacherId));
+    return ids.size;
+  }
+
+  get totalPaidAmount(): number {
+    return this.filteredSalaries
+      .filter(s => (s as any).isPaid)
+      .reduce((sum, s: any) => sum + (s.amount || 0), 0);
+  }
+
+  get totalPendingAmount(): number {
+    return this.filteredSalaries
+      .filter(s => !(s as any).isPaid)
+      .reduce((sum, s: any) => sum + (s.amount || 0), 0);
+  }
+
+  // ----------------------------------
+  // FORM SUBMIT / CRUD
+  // ----------------------------------
+
   onSubmit() {
     if (this.salaryForm.valid) {
       if (this.editMode && this.editId) {
@@ -114,7 +211,7 @@ export class TeacherSalaryComponent implements OnInit {
     this.salaryForm.patchValue({
       teacherId: salary.teacher.id,
       amount: salary.amount,
-      salaryMonth: salary.salaryMonth,
+      salaryMonth: this.normalizeMonth(salary.salaryMonth),
       remarks: salary.remarks
     });
     window.scrollTo(0, 0);
@@ -147,6 +244,10 @@ export class TeacherSalaryComponent implements OnInit {
     this.editMode = false;
     this.editId = null;
   }
+
+  // ----------------------------------
+  // IMPORT FROM EXCEL
+  // ----------------------------------
 
   triggerFileInput() {
     this.fileInput.nativeElement.click();
@@ -202,6 +303,10 @@ export class TeacherSalaryComponent implements OnInit {
     );
   }
 
+  // ----------------------------------
+  // SNACKBARS
+  // ----------------------------------
+
   private showSuccess(message: string) {
     this.snackBar.open(message, 'Close', { duration: 3000 });
   }
@@ -210,4 +315,3 @@ export class TeacherSalaryComponent implements OnInit {
     this.snackBar.open(message, 'Close', { duration: 3000, panelClass: ['error-snackbar'] });
   }
 }
-

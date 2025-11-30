@@ -154,10 +154,11 @@ export interface ApplicationResponse {
 export interface TeacherSalary {
   id?: number;
   teacher: Teacher;
+  teacherId: number;
   amount: number;
   salaryMonth: Date | string;
   paymentDate?: Date | string;
-  isPaid: boolean;
+  paid: boolean;
   remarks?: string;
 }
 
