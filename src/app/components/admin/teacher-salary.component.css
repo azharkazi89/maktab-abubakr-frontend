@@ -1,0 +1,508 @@
+/* ═══════════════════════════════════════════════════════════════
+   TEACHER SALARY COMPONENT STYLES - CONSISTENT THEME
+   Theme: Islamic Green (#006666) & Gold (#d4af37)
+   ═══════════════════════════════════════════════════════════════ */
+
+/* COLOR VARIABLES */
+:root {
+  --primary-color: #006666;      /* Islamic Green */
+  --primary-dark: #004d4d;       /* Dark Green */
+  --primary-light: #00a3a3;      /* Light Green */
+  --accent-color: #d4af37;       /* Gold */
+  --accent-light: #e8c547;       /* Light Gold */
+  --text-primary: #333;          /* Primary Text */
+  --text-secondary: #666;        /* Secondary Text */
+  --text-muted: #999;            /* Muted Text */
+  --bg-light: #f7f7f0;           /* Light Background */
+  --border-color: #ddd;          /* Border Color */
+  --success-color: #28a745;      /* Success */
+  --warning-color: #ffc107;      /* Warning */
+  --danger-color: #dc3545;       /* Danger */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MAIN CONTAINER
+   ═══════════════════════════════════════════════════════════════ */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+/* PAGE TITLE */
+h2 {
+  margin-bottom: 30px;
+  color: var(--primary-color);
+  font-weight: 700;
+  font-size: 32px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+  border-radius: 2px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CARD STYLING
+   ═══════════════════════════════════════════════════════════════ */
+
+mat-card {
+  border-radius: 8px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(0, 102, 102, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 25px;
+}
+
+mat-card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--accent-color);
+}
+
+/* CARD HEADER */
+mat-card-header {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  color: white;
+  padding: 20px;
+  margin: 0;
+  border-bottom: 4px solid var(--accent-color);
+  border-radius: 8px 8px 0 0;
+}
+
+mat-card-title {
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
+/* CARD CONTENT */
+mat-card-content {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+mat-card-content p {
+  margin: 0;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FORM STYLING
+   ═══════════════════════════════════════════════════════════════ */
+
+.mat-form-field {
+  margin-bottom: 1.5rem;
+  width: 100%;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LAYOUT UTILITIES
+   ═══════════════════════════════════════════════════════════════ */
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.col-md-4,
+.col-md-6,
+.col-md-8,
+.col-md-12 {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .col-md-4 {
+    width: calc(33.333% - 14px);
+  }
+  .col-md-6 {
+    width: calc(50% - 10px);
+  }
+  .col-md-8 {
+    width: calc(66.666% - 7px);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TEXT & SPACING UTILITIES
+   ═══════════════════════════════════════════════════════════════ */
+
+.text-end {
+  text-align: right;
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.mb-0 {
+  margin-bottom: 0;
+}
+
+.mb-4 {
+  margin-bottom: 2rem;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.justify-content-end {
+  justify-content: flex-end;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   BUTTON STYLING
+   ═══════════════════════════════════════════════════════════════ */
+
+button {
+  margin-left: 10px;
+  transition: all 0.3s ease;
+}
+
+button:first-of-type {
+  margin-left: 0;
+}
+
+button[mat-raised-button] {
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+button[mat-raised-button][color="primary"] {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+button[mat-raised-button][color="primary"]:hover {
+  background-color: var(--primary-dark) !important;
+  box-shadow: 0 4px 12px rgba(0, 102, 102, 0.3);
+}
+
+button[mat-raised-button][color="accent"] {
+  background-color: var(--accent-color) !important;
+  color: var(--primary-color) !important;
+}
+
+button[mat-raised-button][color="accent"]:hover {
+  background-color: var(--accent-light) !important;
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+button[mat-button] {
+  color: var(--primary-color) !important;
+}
+
+button[mat-button]:hover {
+  background-color: rgba(0, 102, 102, 0.1);
+}
+
+button[mat-icon-button] {
+  color: var(--primary-color);
+}
+
+button[mat-icon-button]:hover {
+  background-color: rgba(0, 102, 102, 0.1);
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   TABLE STYLING
+   ═══════════════════════════════════════════════════════════════ */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: 600;
+  padding: 14px 16px;
+  text-align: left;
+  border: none;
+  letter-spacing: 0.5px;
+}
+
+td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+tr:hover {
+  background-color: rgba(0, 102, 102, 0.05);
+}
+
+tr:last-child td {
+  border-bottom: none;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CHIPS & STATUS INDICATORS
+   ═══════════════════════════════════════════════════════════════ */
+
+mat-chip {
+  min-height: 28px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+mat-chip[color="primary"] {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+mat-chip[color="warn"] {
+  background-color: var(--warning-color) !important;
+  color: white !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PROGRESS BAR
+   ═══════════════════════════════════════════════════════════════ */
+
+mat-progress-bar {
+  margin-top: 15px;
+  border-radius: 4px;
+}
+
+mat-progress-bar   .mat-progress-bar-fill::after {
+  background-color: var(--primary-color) !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   LOADING SPINNER
+   ═══════════════════════════════════════════════════════════════ */
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   RESPONSIVE DESIGN
+   ═══════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+  .container {
+    padding: 20px 15px;
+  }
+
+  h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .col-md-6,
+  .col-md-8,
+  .col-md-4 {
+    width: 100%;
+    padding-right: 0;
+  }
+
+  mat-card-content {
+    padding: 16px;
+  }
+
+  button {
+    margin-left: 0;
+    margin-bottom: 8px;
+    width: 100%;
+  }
+
+  .text-end {
+    text-align: left;
+  }
+
+  table {
+    font-size: 14px;
+  }
+
+  th,
+  td {
+    padding: 10px 12px;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════════════════════════ */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+mat-card {
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+mat-card-header {
+  animation: slideDown 0.3s ease-out;
+}
+
+
+tr:hover {
+  background-color: #fafafa;
+}
+
+mat-chip {
+  min-height: 24px;
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+mat-progress-bar {
+  margin-top: 10px;
+}
+
+mat-icon-button {
+  margin: 0 5px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .col-md-6,
+  .col-md-8,
+  .col-md-4 {
+    width: 100%;
+    margin-bottom: 15px;
+  }
+
+  .text-end {
+    text-align: left;
+  }
+
+  button {
+    width: 100%;
+    margin: 5px 0;
+  }
+}
+
+/* SUMMARY BAR LAYOUT */
+.summary-row {
+  display: flex;
+  flex-wrap: nowrap;          /* ⬅️ keeps everything in ONE row */
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.summary-card {
+  flex: 1 1 0;
+  padding: 1rem 1.25rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+  background-color: #ffffff;
+  border: 1px solid #e5e5e5;
+  min-width: 0;               /* prevents weird overflow */
+}
+
+.summary-label {
+  font-size: 0.8rem;
+  color: #6c757d;
+  margin-bottom: 0.35rem;
+  white-space: nowrap;
+}
+
+.summary-value {
+  font-size: 1.2rem;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+/* (Optional) make the whole page background slightly off-white */
+.container {
+  max-width: 1200px;
+}
+
+/* If you want cards to shrink a bit on very small screens instead of overflowing */
+@media (max-width: 576px) {
+  .summary-row {
+    overflow-x: auto;        /* allows horizontal scroll on tiny screens */
+  }
+  .summary-card {
+    min-width: 278px;        /* so each card is readable */
+  }
+}
