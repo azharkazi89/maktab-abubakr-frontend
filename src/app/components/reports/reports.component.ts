@@ -52,10 +52,10 @@ export class ReportsComponent implements OnInit {
       this.reportTitle = 'Attendance Report';
       this.tableColumns = ['Student', 'Present Days', 'Absent Days'];
     } else if (this.selectedReport === 'fees') {
-      /*if(this.selectedMonth === '') {
+      if(this.selectedMonth === '') {
         alert('Please select a month for the Fees Report.');
         return;
-      }*/
+      }
       this.reportTitle = 'Fees Report';
       this.tableColumns = this.columns
         //.filter(col => col.selected)

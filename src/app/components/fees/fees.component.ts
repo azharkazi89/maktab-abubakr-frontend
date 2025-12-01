@@ -53,7 +53,7 @@ export class FeesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadStudents();
+    //this.loadStudents();
     this.loadClasses();
     this.totalPages = Math.ceil(this.students.length / this.itemsPerPage);
   }

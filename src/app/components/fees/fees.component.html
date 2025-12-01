@@ -17,7 +17,7 @@
       <option value="ALL">All Status</option>
       <option value="PAID">Paid</option>
       <option value="DUE">Due</option>
-      <option value="FISBILILLAH">Fi Sabilillah</option>
+      <option value="FI-SABILILLAH">Fi Sabilillah</option>
     </select>
     <input class="large-input" type="text" placeholder="Search by name, contact, roll no" [(ngModel)]="searchText">
   </div>
@@ -39,7 +39,9 @@
       <tbody>
       <tr *ngFor="let s of filteredStudents(); let i = index">
         <td>{{i+1}}</td>
-        <td><a [routerLink]="['/student', s.id, 'fees']">{{ s.name }}</a></td>
+        <td><a [routerLink]="['/student', s.id, 'fees']">{{ s.name.replace('*', '') }}</a>
+          <span class="badge bg-info ms-1" *ngIf="s.name.endsWith('*')">EBC</span>
+        </td>
         <td>{{ s.maktabClass?.name }}</td>
         <td>{{ s.phone }}</td>
         <td>{{s.admissionDate}}</td>

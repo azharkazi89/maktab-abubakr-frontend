@@ -15,7 +15,7 @@
     </label>
 
     <label>
-      Month:
+      Month<span style="color: red">*</span>:
       <select [(ngModel)]="selectedMonth" >
         <option value="">All Months</option>
         <option *ngFor="let month of months" [value]="month">{{ month }}</option>
@@ -36,16 +36,16 @@
         <option value="">All Status</option>
         <option value="PAID">Paid</option>
         <option value="UNPAID">Un-paid</option>
-        <option value="FISBILILLAH">Fi Sabilillah</option>
+        <option value="FI-SABILILLAH">Fi Sabilillah</option>
       </select>
     </label>
     <label>
       Search:
       <button class="btn-primary" (click)="loadReport()">Submit</button>
     </label>
-    <label>
+    <label *ngIf="reportData && reportData.length >0">
       Download Report:
-      <button *ngIf="reportData && reportData.length >0" class="btn-primary" (click)="downloadReport()">Download</button>
+      <button *ngIf="reportData && reportData.length >0" class="btn-secondary" (click)="downloadReport()">Download</button>
     </label>
   </div>
   <div   *ngIf="selectColumns">
@@ -70,7 +70,7 @@
         <tbody>
         <tr *ngFor="let row of reportData; let i = index">
           <td>{{i+1}}</td>
-          <td><a [routerLink]="['/student', row.studentId, 'fees']">{{ row.studentFullName }}</a>
+          <td><a [routerLink]="['/student/details', row.studentId]">{{ row.studentFullName }}</a>
             <label class="col-form-label-sm" *ngIf="row.studentFullName.indexOf('*')!=-1"></label>
           </td>
           <td >{{ row.className }}</td>
