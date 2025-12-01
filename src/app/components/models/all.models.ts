@@ -166,3 +166,22 @@ export interface AppNotification {
   message: string;
   type: 'success' | 'error' | 'info' | 'warning';
 }
+export interface ReportRow {
+  id: number;
+  studentId: number;
+  phone: string;
+  studentFullName: string;
+  className: string;
+  month: string;
+  status: string;
+  remark: string;
+  paidAmount: number;
+  dueAmount: number;
+  // add more fields if you have
+}
+
+export interface ColumnConfig {
+  key: keyof ReportRow | 'index';   // 'index' for serial no
+  header: string;
+  selected: boolean;
+}

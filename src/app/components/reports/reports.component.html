@@ -5,7 +5,7 @@
   <div class="report-filters">
     <label>
       Select Report:
-      <select [(ngModel)]="selectedReport" (change)="loadReport()">
+      <select [(ngModel)]="selectedReport" >
         <option value="attendance">📋 Attendance Report</option>
         <option value="fees">💰 Fees Report</option>
         <option value="exam-results">✍️ Exam Results</option>
@@ -15,20 +15,48 @@
     </label>
 
     <label>
-      Class:
-      <select [(ngModel)]="selectedClass" (change)="loadReport()">
-        <option value="">All Classes</option>
-        <option *ngFor="let className of classes" [value]="className">{{ className }}</option>
+      Month:
+      <select [(ngModel)]="selectedMonth" >
+        <option value="">All Months</option>
+        <option *ngFor="let month of months" [value]="month">{{ month }}</option>
       </select>
     </label>
 
     <label>
-      Date Range:
-      <input type="date" [(ngModel)]="startDate"> -
-      <input type="date" [(ngModel)]="endDate" (change)="loadReport()">
+      Class:
+      <select [(ngModel)]="selectedClass" >
+        <option value="">All Classes</option>
+        <option *ngFor="let cls of classes" [value]="cls.id">{{cls.name}}</option>
+      </select>
+    </label>
+
+    <label *ngIf="this.selectedReport === 'fees'">
+      Status:
+      <select [(ngModel)]="selectedStatus">
+        <option value="">All Status</option>
+        <option value="PAID">Paid</option>
+        <option value="UNPAID">Un-paid</option>
+        <option value="FISBILILLAH">Fi Sabilillah</option>
+      </select>
+    </label>
+    <label>
+      Search:
+      <button class="btn-primary" (click)="loadReport()">Submit</button>
+    </label>
+    <label>
+      Download Report:
+      <button *ngIf="reportData && reportData.length >0" class="btn-primary" (click)="downloadReport()">Download</button>
     </label>
   </div>
+  <div   *ngIf="selectColumns">
+    <span>Select columns to export: </span>
+    <label *ngFor="let col of columns" style="margin-right: 10px;">
+      <input type="checkbox" [(ngModel)]="col.selected" />
+      {{ col.header }}
+    </label>
 
+    <button (click)="exportSelectedColumnsToExcel()">Download Excel</button>
+  </div>
   <!-- Dynamic Report -->
   <div class="report-section" *ngIf="reportData && reportData.length">
     <h3>{{ reportTitle }}</h3>
@@ -40,10 +68,21 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let row of reportData">
-          <td *ngFor="let col of tableColumns">{{ row[col] }}</td>
+        <tr *ngFor="let row of reportData; let i = index">
+          <td>{{i+1}}</td>
+          <td><a [routerLink]="['/student', row.studentId, 'fees']">{{ row.studentFullName }}</a>
+            <label class="col-form-label-sm" *ngIf="row.studentFullName.indexOf('*')!=-1"></label>
+          </td>
+          <td >{{ row.className }}</td>
+          <td >{{ row.phone }}</td>
+          <td >{{ row.month }}</td>
+          <td >{{ row.status }}</td>
+          <td >{{ row.paidAmount }}</td>
+          <td >{{ row.dueAmount }}</td>
+          <td >{{ row.remark }}</td>
         </tr>
         </tbody>
+
       </table>
     </div>
   </div>
