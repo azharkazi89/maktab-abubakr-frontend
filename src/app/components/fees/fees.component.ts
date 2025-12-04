@@ -55,7 +55,7 @@ export class FeesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadStudentFees(0);
+    this.loadData(0);
     this.loadClasses();
   }
 
@@ -70,10 +70,11 @@ export class FeesComponent implements OnInit {
     );
   }
 
-  loadStudentFees(page: number) {
+  loadData(page: number) {
     this.studentService.getAll({"page":page,"size":this.pageSize}).subscribe(
       (data: SelectableStudent[]) => {
         this.students = data;
+        //this.filteredStudents();
       },
       (error: HttpErrorResponse) => {
         console.error('Error fetching students', error);
@@ -139,7 +140,7 @@ export class FeesComponent implements OnInit {
 
     this.feeService.assignFees(request).subscribe(
       (res: BatchFeeResponse) => {  // <-- type the response
-        this.loadStudentFees(0);
+        this.loadData(0);
       },
       (err: HttpErrorResponse) => { // <-- type the error
         console.error('Error assigning fees:', err.message);

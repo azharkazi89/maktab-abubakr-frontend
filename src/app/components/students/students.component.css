@@ -47,3 +47,18 @@
 .col-md-3 {
   flex: 0 0 auto;
 }
+
+.pagination-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.small-tag {
+  background: #17a2b8;
+  padding: 2px 6px;
+  font-size: 10px;
+  border-radius: 4px;
+  margin-left: 5px;
+  color: #fff;
+}

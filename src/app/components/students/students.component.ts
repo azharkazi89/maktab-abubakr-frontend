@@ -5,24 +5,28 @@ import {Router, RouterLink} from '@angular/router';
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {BackButtonDirective} from "../commons/back-button.directive";
+import {PaginationComponent} from "../commons/pagination.component";
 
 @Component({
   selector: 'app-students',
   templateUrl: './students.component.html',
   styleUrls: ['./students.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, BackButtonDirective]
+  imports: [CommonModule, FormsModule, RouterLink, BackButtonDirective, PaginationComponent]
 })
 export class StudentListComponent implements OnInit {
 
   students: Student[] = [];
-
+  currentPage = 0;
+  totalPages = 10;
+  totalItems: number;
+  pageSize: number = 20;
   constructor(
     private studentService: StudentService) {
   }
 
   ngOnInit(): void {
-    this.loadStudents();
+    this.loadData(0);
   }
   searchText: string = '';
 
@@ -42,8 +46,8 @@ export class StudentListComponent implements OnInit {
     );
   }
 
-  loadStudents(): void {
-    this.studentService.getAll({"page":1,"size":20}).subscribe({
+  loadData(page: number): void {
+    this.studentService.getAll({"page":page,"size":20}).subscribe({
       next: (data: Student[]) => {
         this.students = data;
         // Optional success message
