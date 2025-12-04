@@ -71,7 +71,7 @@ export class FeesComponent implements OnInit {
   }
 
   loadData(page: number) {
-    this.studentService.getAll({"page":page,"size":this.pageSize}).subscribe(
+    this.studentService.getAll({"page":page,"size":300}).subscribe(
       (data: SelectableStudent[]) => {
         this.students = data;
         //this.filteredStudents();
