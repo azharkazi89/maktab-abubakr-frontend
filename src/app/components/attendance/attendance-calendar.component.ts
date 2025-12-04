@@ -43,7 +43,7 @@ export class AttendanceCalendarComponent implements OnInit {
   }
 
   loadStudents() {
-    this.studentService.getAll().subscribe(
+    this.studentService.getAll({"page":1,"size":20}).subscribe(
       (data: Student[]) => {
         this.students = data;
       },

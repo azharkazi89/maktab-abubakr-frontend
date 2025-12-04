@@ -41,7 +41,7 @@
 
     <label>
       Search:
-      <button class="btn-primary" (click)="loadReport(0)">Submit</button>
+      <button class="btn-primary" (click)="loadData(0)">Submit</button>
     </label>
 
     <label *ngIf="reportData?.length > 0">
@@ -96,7 +96,7 @@
     <app-pagination
       [currentPage]="currentPage"
       [totalPages]="totalPages"
-      (pageChange)="loadReport($event)">
+      (pageChange)="loadData($event)">
     </app-pagination>
   </div>
 

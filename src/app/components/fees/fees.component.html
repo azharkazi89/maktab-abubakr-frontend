@@ -68,13 +68,14 @@
       </tr>
       </tbody>
     </table>
+    <div class="pagination-wrapper" *ngIf="totalPages > 1">
+      <app-pagination
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        (pageChange)="loadStudentFees($event)">
+      </app-pagination>
+    </div>
   </div>
 
-   Pagination
-  <div class="pagination">
-     <button (click)="prevPage()" [disabled]="currentPage===1">Prev</button>
-     <span>Page {{currentPage}} / {{totalPages}}</span>
-     <button (click)="nextPage()" [disabled]="currentPage===totalPages">Next</button>
-   </div>
   <button appBackButton class="btn-secondary">Back</button>
 </div>

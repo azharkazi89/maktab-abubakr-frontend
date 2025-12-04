@@ -8,7 +8,7 @@ import { API_BASE } from '../_api-base';
 export class StudentService {
   private baseUrl = `${API_BASE}`+`/student/`;
   constructor(private http: HttpClient) {}
-  getAll(): Observable<Student[]> { return this.http.get<Student[]>(this.baseUrl); }
+  getAll(req :{page: number,size: number}): Observable<Student[]> { return this.http.post<Student[]>(this.baseUrl+`list`, req); }
   get(id: number): Observable<Student> { return this.http.get<Student>(`${this.baseUrl}${id}`); }
   create(dto: Student): Observable<Student> { return this.http.post<Student>(this.baseUrl, dto); }
 

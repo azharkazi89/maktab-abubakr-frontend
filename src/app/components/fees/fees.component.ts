@@ -8,6 +8,7 @@ import {Router, RouterLink} from "@angular/router";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {BackButtonDirective} from "../commons/back-button.directive";
+import { PaginationComponent } from '../commons/pagination.component';
 
 interface SelectableStudent extends Student {
   selected: boolean;
@@ -20,7 +21,7 @@ interface SelectableStudent extends Student {
   templateUrl: './fees.component.html',
   styleUrls: ['./fees.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink, BackButtonDirective]
+  imports: [CommonModule, FormsModule, RouterLink, BackButtonDirective, PaginationComponent]
 })
 export class FeesComponent implements OnInit {
   DUE: string = 'Due';
@@ -43,9 +44,10 @@ export class FeesComponent implements OnInit {
   rollNo: string = '';
   searchText: string = '';
 
-  currentPage: number = 1;
-  itemsPerPage: number = 10;
-  totalPages: number = 1;
+  currentPage = 0;
+  totalPages = 10;
+  totalItems: number;
+  pageSize: number = 20;
 
   //students: StudentFeeDTO[] = [];
   constructor(private feeService: FeeService, private studentService: StudentService,
@@ -53,9 +55,8 @@ export class FeesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadStudentFees();
+    this.loadStudentFees(0);
     this.loadClasses();
-    this.totalPages = Math.ceil(this.students.length / this.itemsPerPage);
   }
 
   loadClasses() {
@@ -69,8 +70,8 @@ export class FeesComponent implements OnInit {
     );
   }
 
-  private loadStudentFees() {
-    this.studentService.getAll().subscribe(
+  loadStudentFees(page: number) {
+    this.studentService.getAll({"page":page,"size":this.pageSize}).subscribe(
       (data: SelectableStudent[]) => {
         this.students = data;
       },
@@ -138,7 +139,7 @@ export class FeesComponent implements OnInit {
 
     this.feeService.assignFees(request).subscribe(
       (res: BatchFeeResponse) => {  // <-- type the response
-        this.loadStudentFees();
+        this.loadStudentFees(0);
       },
       (err: HttpErrorResponse) => { // <-- type the error
         console.error('Error assigning fees:', err.message);

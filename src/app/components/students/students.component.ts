@@ -43,7 +43,7 @@ export class StudentListComponent implements OnInit {
   }
 
   loadStudents(): void {
-    this.studentService.getAll().subscribe({
+    this.studentService.getAll({"page":1,"size":20}).subscribe({
       next: (data: Student[]) => {
         this.students = data;
         // Optional success message

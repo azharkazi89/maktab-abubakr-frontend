@@ -46,14 +46,14 @@ export class ReportsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadClasses();
-    this.loadReport(0);
+    this.loadData(0);
   }
   currentPage = 0;
   totalPages = 10;
   totalItems: number;
   pageSize: number = 20;
 
-  loadReport(page: number) {
+  loadData(page: number) {
     if (this.selectedReport === 'attendance') {
       this.reportTitle = 'Attendance Report';
       this.tableColumns = ['Student', 'Present Days', 'Absent Days'];
