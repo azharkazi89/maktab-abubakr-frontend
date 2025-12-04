@@ -2,9 +2,11 @@
   <div class="page-header">
     <h2>Fee Details for {{ student?.studentName }}</h2>
     <p><b>Note: Student Admission Date {{ student?.admissionDate }}</b></p>
+    <p><b>Total Fees Paid:</b> Rs. {{ calculateTotalFeesPaid(student) }}/-</p>
+    <p><b>Total Fees Pending:</b> Rs. {{ calculateTotalFeesPending(student) }}/-</p>
   </div>
 
-  <table class="fees-table" >
+  <table class="fees-table">
     <thead>
     <tr>
       <th>#</th>
@@ -15,7 +17,6 @@
       <th>Received By</th>
       <th>Payment Mode</th>
       <th>Comment</th>
-      <th>Action</th>
     </tr>
     </thead>
     <tbody>
@@ -30,10 +31,9 @@
       </td>
       <td data-label="Status">
         <select [(ngModel)]="f.status" name="status{{i}}">
-          <option value="ALL">All Status</option>
           <option value="PAID">Paid</option>
-          <option value="DUE">Due</option>
-          <option value="FISBILILLAH">Fi Sabilillah</option>
+          <option value="UNPAID">Un-paid</option>
+          <!--<option value="FISBILILLAH">Fi Sabilillah</option>-->
         </select>
       </td>
       <td data-label="Received By">
@@ -49,27 +49,16 @@
       <td data-label="Remark">
         <input type="text" [(ngModel)]="f.remark" name="remark{{i}}" autocomplete="off">
       </td>
-      <td>
-        <button class="notify-btn"  (click)="f.id==null?addFee(f):editFee(f)">Save/Edit</button>
-        <button class="bg-warning"  *ngIf="f.id!=undefined" (click)="deleteFee(f)">Delete</button>
-
-      </td>
     </tr>
     </tbody>
-    <tfoot>
-    <tr>
-      <td colspan="3"><b>Total Fees Paid:</b></td>
-      <td colspan="6"><b>Rs. {{ calculateTotalFeesPaid(student) }}/-</b></td>
-    </tr>
-    <tr>
-      <td colspan="3"><b>Total Fees Pending:</b></td>
-      <td colspan="6"><b>Rs. {{ calculateTotalFeesPending(student) }}/</b></td>
-    </tr>
-    </tfoot>
+
   </table>
 
   <div class="action-buttons-left">
     <button appBackButton class="btn btn-secondary">Back</button>
     <button class="notify-btn" (click)="notifyParents()">Notify Parents/Guardian</button>
+    <!--<button class="btn-primary" (click)="addFee()">Save</button>-->
+    <button class="btn-secondary" (click)="editFee()">Save</button>
+    <!--<button class="bg-warning" (click)="deleteFee()">Delete</button>-->
   </div>
 </div>

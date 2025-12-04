@@ -166,6 +166,7 @@ export interface AppNotification {
   message: string;
   type: 'success' | 'error' | 'info' | 'warning';
 }
+
 export interface ReportRow {
   id: number;
   studentId: number;
@@ -177,7 +178,14 @@ export interface ReportRow {
   remark: string;
   paidAmount: number;
   dueAmount: number;
-  // add more fields if you have
+}
+
+export interface ReportResponse {
+  data: ReportRow[];
+  currentPage: number;
+  totalPages: number;
+  pageSize: number;
+  totalItems: number;
 }
 
 export interface ColumnConfig {

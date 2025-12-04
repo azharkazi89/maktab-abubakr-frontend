@@ -186,7 +186,7 @@ export class StudentDetailsComponent implements OnInit {
     formData.append('student', new Blob([JSON.stringify(this.editingStudent)], {type: 'application/json'}));
 
     if (this.photoPreview) {
-      formData.append('photo', this.photoPreview);
+     // formData.append('photo', this.photoPreview);
     }
 
     this.studentService.updateStudent(formData).subscribe({

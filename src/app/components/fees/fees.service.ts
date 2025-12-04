@@ -1,7 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {Fee, BatchFeeRequest, BatchFeeResponse, StudentFeeDTO, FeeDTO, ReportRow} from '../models/all.models';
+import {
+  Fee,
+  BatchFeeRequest,
+  BatchFeeResponse,
+  StudentFeeDTO,
+  FeeDTO,
+  ReportRow,
+  ReportResponse
+} from '../models/all.models';
 import {API_BASE} from '../_api-base';
 
 @Injectable({
@@ -17,8 +25,8 @@ export class FeeService {
     return this.http.get<Fee[]>(this.baseUrl);
   }
 
-  searchFees(req:any): Observable<ReportRow[]> {
-    return this.http.post<ReportRow[]>(this.baseUrl+`/searchFees`, req);
+  searchFees(req:any): Observable<ReportResponse> {
+    return this.http.post<ReportResponse>(this.baseUrl+`/searchFees`, req);
   }
 
   create(dto: FeeDTO, id: number): Observable<Fee> { return this.http.post<Fee>(`${this.baseUrl}/${id}`, dto); }

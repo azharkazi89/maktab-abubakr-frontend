@@ -27,7 +27,7 @@ export class FeesComponent implements OnInit {
   PAID: string = 'Paid';
 
   createdFees: FeeResponse[] = [];
-  students: Student[] = [];
+  students: SelectableStudent[] = [];
   message: string = '';
   fees: Fee[] = [];
   classes: MaktabClass[] = [];
@@ -53,7 +53,7 @@ export class FeesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //this.loadStudents();
+    this.loadStudentFees();
     this.loadClasses();
     this.totalPages = Math.ceil(this.students.length / this.itemsPerPage);
   }
@@ -69,9 +69,9 @@ export class FeesComponent implements OnInit {
     );
   }
 
-  private loadStudents() {
+  private loadStudentFees() {
     this.studentService.getAll().subscribe(
-      (data: Student[]) => {
+      (data: SelectableStudent[]) => {
         this.students = data;
       },
       (error: HttpErrorResponse) => {
@@ -80,9 +80,9 @@ export class FeesComponent implements OnInit {
     );
   }
 
-  filteredStudents(): Student[] {
+  filteredStudents(): SelectableStudent[] {
     const lower = this.searchText.toLowerCase();
-    return this.students.filter((s: Student) => {
+    return this.students.filter((s: SelectableStudent) => {
       const matchesClass = this.selectedClass === '' || s.maktabClass.id.toString() === this.selectedClass;
       const matchesStatus = this.selectedStatus === 'ALL' || this.getStatus(s) === this.selectedStatus;
       const matchesSearch =
@@ -103,35 +103,29 @@ export class FeesComponent implements OnInit {
     if (this.currentPage < this.totalPages) this.currentPage++;
   }
 
-  /*
-    toggleFeeStatus(fee: Fee) {
-      if (fee.status === 'unpaid') fee.status = 'paid';
-      else if (fee.status === 'paid') fee.status = 'unpaid';
-      else if (fee.status === 'fi-sabilillah') fee.status = 'paid';
+  selectAll: boolean = false;
+
+  toggleAllSelection() {
+    this.selectAll = !this.selectAll;
+    (this.students as SelectableStudent[]).forEach((s: SelectableStudent) => (s.selected = this.selectAll));
+  }
+
+  bulkUpdateStatus(status: 'paid' | 'unpaid') {
+    (this.filteredStudents() as SelectableStudent[]).forEach(s => {
+      if (s.selected) s.status = status;
+    });
+  }
+
+  notifyParents() {
+    const selectedStudents = (this.filteredStudents() as SelectableStudent[])
+      .filter((s: SelectableStudent) => s.selected)
+      .map((s: Student) => s.name);
+    if (selectedStudents.length === 0) {
+      alert('Please select at least one student.');
+      return;
     }
-
-    selectAll: boolean = false;
-
-    /!* toggleAllSelection() {
-      (this.filteredStudents() as SelectableStudent[]).forEach((s: SelectableStudent) => (s.selected = s.selectAll));
-    } *!/
-
-    bulkUpdateStatus(status: 'paid' | 'unpaid') {
-      (this.filteredStudents() as SelectableStudent[]).forEach(s => {
-        if (s.selected) s.status = status;
-      });
-    }
-
-    notifyParents() {
-      const selectedStudents = (this.filteredStudents() as SelectableStudent[])
-        .filter((s: SelectableStudent) => s.selected)
-        .map((s: Student) => s.name);
-      if (selectedStudents.length === 0) {
-        alert('Please select at least one student.');
-        return;
-      }
-      alert('Notification sent to parents of: ' + selectedStudents.join(', '));
-    }*/
+    alert('Notification sent to parents of: ' + selectedStudents.join(', '));
+  }
 
   selectedIds = new Set<number>();
 
@@ -144,7 +138,7 @@ export class FeesComponent implements OnInit {
 
     this.feeService.assignFees(request).subscribe(
       (res: BatchFeeResponse) => {  // <-- type the response
-        this.loadStudents();
+        this.loadStudentFees();
       },
       (err: HttpErrorResponse) => { // <-- type the error
         console.error('Error assigning fees:', err.message);
@@ -194,10 +188,16 @@ export class FeesComponent implements OnInit {
   }
 
   calculateTotalFeesPending(student: Student): number {
+    return student.fees.filter(value => {
+      return value.status.toUpperCase() === 'UNPAID';
+    }).reduce((sum, fee) => sum + fee.paidAmount - 300, 0);
+  }
+
+  /*calculateTotalFeesPending(student: Student): number {
     const months = this.feeService.getMonthsPassed(student.admissionDate);
     const monthlyFee = 300;
     return (months * monthlyFee) - this.calculateTotalFeesPaid(student)<0?0:(months * monthlyFee) - this.calculateTotalFeesPaid(student);
-  }
+  }*/
 
   bulkNotifyParents() {
     const payload = {};

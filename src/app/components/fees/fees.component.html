@@ -13,6 +13,11 @@
       <option *ngFor="let cls of classes" [value]="cls.id">{{cls.name}}</option>
     </select>
 
+    <!--<select [(ngModel)]="selectedMonth">
+      <option value="">All Months</option>
+      <option *ngFor="let m of months" [value]="m">{{m}}</option>
+    </select>-->
+
     <select [(ngModel)]="selectedStatus">
       <option value="ALL">All Status</option>
       <option value="PAID">Paid</option>
@@ -22,11 +27,21 @@
     <input class="large-input" type="text" placeholder="Search by name, contact, roll no" [(ngModel)]="searchText">
   </div>
 
+  <!-- Bulk actions -->
+ <div class="bulk-actions">
+    <button class="action-btn paid" (click)="assignFees('PAID')">✔ Mark Selected as Paid</button>
+    <button class="action-btn unpaid" (click)="assignFees('DUE')">✖ Mark Selected as Unpaid</button>
+    <button class="action-btn notify" (click)="bulkNotifyParents()">📩 Notify Parents</button>
+  </div>
+
+
   <!-- Fees Table -->
   <div class="table-wrapper">
     <table class="fees-table">
       <thead>
       <tr>
+        <th>
+          <input type="checkbox" [(ngModel)]="selectAll" (ngModelChange)="toggleAllSelection()"></th>
         <th>#</th>
         <th>Student Name</th>
         <th>Class</th>
@@ -38,6 +53,9 @@
       </thead>
       <tbody>
       <tr *ngFor="let s of filteredStudents(); let i = index">
+        <td>  <input type="checkbox"
+                     [checked]="s.selected"
+                     (change)="toggleSelection(s)"></td>
         <td>{{i+1}}</td>
         <td><a [routerLink]="['/student', s.id, 'fees']">{{ s.name.replace('*', '') }}</a>
           <span class="badge bg-info ms-1" *ngIf="s.name.endsWith('*')">EBC</span>
@@ -52,5 +70,11 @@
     </table>
   </div>
 
+   Pagination
+  <div class="pagination">
+     <button (click)="prevPage()" [disabled]="currentPage===1">Prev</button>
+     <span>Page {{currentPage}} / {{totalPages}}</span>
+     <button (click)="nextPage()" [disabled]="currentPage===totalPages">Next</button>
+   </div>
   <button appBackButton class="btn-secondary">Back</button>
 </div>

@@ -47,7 +47,7 @@ export const routes: Routes = [
   { path: 'student/:id/attendance', component: StudentAttendanceDetailsComponent },
 
   // Fees
-  { path: 'fees', component: ReportsComponent },
+  { path: 'fees', component: FeesComponent },
   { path: 'student/:id/fees', component: StudentFeeDetailsComponent },
 
   // Reports
