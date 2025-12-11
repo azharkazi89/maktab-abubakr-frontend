@@ -1,0 +1,14 @@
+<h2>Send Bulk WhatsApp Message</h2>
+
+<app-phone-input (numbersChanged)="phones = $event"></app-phone-input>
+
+<app-message-input (messageChanged)="message = $event"></app-message-input>
+
+<button (click)="send()" [disabled]="loading">
+  {{ loading ? 'Sending...' : 'Send Messages' }}
+</button>
+
+<div *ngIf="results">
+  <h3>Results:</h3>
+  <pre>{{ results | json }}</pre>
+</div>

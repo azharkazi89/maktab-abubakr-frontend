@@ -1,0 +1,17 @@
+<div class="container mt-3">
+  <h3>Send WhatsApp Message</h3>
+
+  <div class="mb-3">
+    <label>Chat ID</label>
+    <input type="text" class="form-control"
+           [(ngModel)]="chatId" placeholder="e.g. 12132132130@c.us">
+  </div>
+
+  <div class="mb-3">
+    <label>Message</label>
+    <textarea class="form-control"
+              [(ngModel)]="text" rows="3"></textarea>
+  </div>
+
+  <button class="btn btn-primary" (click)="send()">Send</button>
+</div>
