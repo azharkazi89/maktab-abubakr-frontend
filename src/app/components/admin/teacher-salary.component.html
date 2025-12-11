@@ -1,0 +1,264 @@
+<div class="container mt-3">
+  <h2 class="page-title">👨‍🏫 Teacher Salary Management</h2>
+
+  <!-- SUMMARY ROW: always 4 cards in one row -->
+  <div class="summary-row">
+    <!-- SUMMARY BAR -->
+    <div class="summary-row">
+      <div class="summary-card">
+        <div class="summary-label">Total Teachers</div>
+        <div class="summary-value">{{ totalTeachers }}</div>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-label">Total Salary (Paid)</div>
+        <div class="summary-value">
+          ₹ {{ totalPaidAmount | number: '1.0-0' }}
+        </div>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-label">Total Salary (Pending)</div>
+        <div class="summary-value">
+          ₹ {{ totalPendingAmount | number: '1.0-0' }}
+        </div>
+      </div>
+
+      <div class="summary-card">
+        <div class="summary-label">Overall Total (This Month)</div>
+        <div class="summary-value">
+          ₹ {{ (totalPaidAmount + totalPendingAmount) | number: '1.0-0' }}
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Import Section -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h5 class="mb-0">Import Salaries from Excel</h5>
+    </div>
+    <div class="card-body">
+      <div class="row align-items-center">
+        <div class="col-md-8">
+          <p class="text-muted mb-0">
+            Upload an Excel file (.xlsx or .xls) to import multiple teacher salary records at once.
+          </p>
+        </div>
+        <div class="col-md-4 text-end">
+          <input
+            #fileInput
+            type="file"
+            accept=".xlsx,.xls"
+            hidden
+            (change)="onFileSelected($event)"
+          />
+          <button
+            class="btn-secondary"
+            type="button"
+            (click)="triggerFileInput()"
+            [disabled]="isImporting"
+          >
+            {{ isImporting ? 'Importing...' : 'Choose File & Import' }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Simple progress bar -->
+      <div class="progress mt-3" *ngIf="isImporting">
+        <div
+          class="progress-bar"
+          role="progressbar"
+          [style.width.%]="importProgress"
+          aria-valuemin="0"
+          aria-valuemax="100"
+        >
+          {{ importProgress }}%
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Salary Form -->
+  <div class="card mb-4">
+    <div class="card-header">
+      <h5 class="mb-0">
+        {{ editMode ? 'Update' : 'Add' }} Salary Record
+      </h5>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="salaryForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <!-- Teacher -->
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Teacher</label>
+            <select
+              class="form-control"
+              formControlName="teacherId"
+              required
+            >
+              <option value="">-- Select Teacher --</option>
+              <option
+                *ngFor="let teacher of teachers"
+                [value]="teacher.id"
+              >
+                {{ teacher.fullName }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Amount -->
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Amount</label>
+            <input
+              type="number"
+              class="form-control"
+              formControlName="amount"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="row">
+          <!-- Salary Month -->
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Salary Month</label>
+            <input
+              type="month"
+              class="form-control"
+              formControlName="salaryMonth"
+              required
+            />
+          </div>
+
+          <!-- Remarks -->
+          <div class="col-md-6 mb-3">
+            <label class="form-label">Remarks</label>
+            <textarea
+              class="form-control"
+              rows="1"
+              formControlName="remarks"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-2">
+          <button
+            type="button"
+            class="btn-secondary"
+            (click)="resetForm()
+          ">
+            Reset
+          </button>
+          <button
+            type="submit"
+            class="btn-primary"
+            [disabled]="!salaryForm.valid"
+          >
+            {{ editMode ? 'Update' : 'Save' }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card mb-4">
+    <div class="card-header">
+      <h5 class="mb-0">Filters</h5>
+    </div>
+    <div class="card-body">
+      <div class="row g-2 align-items-end">
+        <!-- Filter by Teacher Name -->
+        <div class="col-md-4 mb-2">
+          <label class="form-label">Teacher Name</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Search by name"
+            [(ngModel)]="filterName"
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </div>
+
+        <!-- Filter by Month -->
+        <div class="col-md-4 mb-2">
+          <label class="form-label">Month</label>
+          <input
+            type="month"
+            class="form-control"
+            [(ngModel)]="filterMonth"
+            [ngModelOptions]="{ standalone: true }"
+          />
+        </div>
+
+        <!-- Filter by Status -->
+        <div class="col-md-4 mb-2">
+          <label class="form-label">Status</label>
+          <select
+            class="form-control"
+            [(ngModel)]="filterStatus"
+            [ngModelOptions]="{ standalone: true }"
+          >
+            <option value="">All</option>
+            <option value="PAID">Paid</option>
+            <option value="PENDING">Pending</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Salary Records Table -->
+  <div class="table-wrapper">
+    <table>
+      <thead>
+      <tr>
+        <th>#</th>
+        <th>Teacher</th>
+        <th>Amount</th>
+        <th>Month</th>
+        <th>Status</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <!-- NOTE: use filteredSalaries in TS to apply filters -->
+      <tr *ngFor="let element of filteredSalaries; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ element.teacher?.fullName }}</td>
+        <td>₹ {{ element.amount }} /-</td>
+        <td>{{ element.salaryMonth | date: 'MMM yyyy' }}</td>
+        <td>
+            <span
+              class="badge"
+              [ngClass]="element.paid ? 'bg-success' : 'bg-warning'"
+            >
+              {{ element.paid ? 'Paid' : 'Pending' }}
+            </span>
+        </td>
+        <td>
+          <button
+            type="button"
+            class="btn-primary btn-sm"
+            (click)="editSalary(element)"
+          >
+            Edit
+          </button>
+
+          <button
+            type="button"
+            class="btn-secondary btn-sm ms-2"
+            *ngIf="!element.paid"
+            (click)="markAsPaid(element.id)"
+          >
+            Mark as Paid
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <button appBackButton class="btn-secondary mt-3">Back</button>
+</div>

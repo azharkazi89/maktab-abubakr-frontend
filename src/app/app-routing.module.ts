@@ -5,7 +5,7 @@ import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { StudentListComponent } from './components/students/students.component';
 import { StudentDetailsComponent } from './components/students/student-details.component';
-import { TeacherListComponent } from './components/teachers/teachers.component';
+import {TeacherComponent} from './components/teachers/teachers.component';
 import { ClassesComponent } from './components/classes/classes.component';
 import { SubjectComponent } from './components/subjects/subjects.component';
 import { AttendanceCalendarComponent } from './components/attendance/attendance-calendar.component';
@@ -14,6 +14,8 @@ import { FeesComponent } from './components/fees/fees.component';
 import { StudentFeeDetailsComponent } from './components/fees/fee-details.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { UploadComponent } from './components/upload/upload.component';
+import {AdminComponent} from "./components/admin/admin.component";
+import { TeacherSalaryComponent } from './components/admin/teacher-salary.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -22,13 +24,13 @@ export const routes: Routes = [
 
   // Students
   { path: 'students', component: StudentListComponent },
-  { path: 'students/new', component: StudentListComponent },
+  { path: 'student/new', component: StudentDetailsComponent },
   { path: 'student/details/:id', component: StudentDetailsComponent },
 
   // Teachers
-  { path: 'teachers', component: TeacherListComponent },
-  { path: 'teachers/new', component: TeacherListComponent },
-  { path: 'teachers/:id', component: TeacherListComponent },
+  { path: 'teachers', component: TeacherComponent },
+  { path: 'admin', component: AdminComponent},
+  { path: 'teacher-salary', component: TeacherSalaryComponent },
 
   // Classes
   { path: 'classes', component: ClassesComponent },

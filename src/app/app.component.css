@@ -1,4 +1,4 @@
 .main-content-container {
-  margin-top: 70px; /* adjust if your navbar has height */
-  padding: 20px;
+  padding: var(--spacing-lg);
+  flex: 1;
 }

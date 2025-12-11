@@ -41,8 +41,7 @@
       </div>
     </div>
   </div>
-  <!--<app-back-button></app-back-button>-->
-  <!-- Attendance Dialog -->
+
   <div *ngIf="selectedDay" class="dialog">
     <h3>Attendance for {{ selectedDay | date:'fullDate' }}</h3>
     <table>
@@ -56,7 +55,6 @@
           <select [(ngModel)]="selectedStatus">
             <option value="PRESENT">✅ Present</option>
             <option value="ABSENT">❌ Absent</option>
-            <option value="LATE">🕐 Late</option>
           </select>
         </td>
       </tr>
@@ -66,5 +64,5 @@
       <button (click)="closeDialog()">Cancel</button>
     </div>
 </div>
-  <!--<app-back-button></app-back-button>-->
+  <button appBackButton class="btn btn-secondary">Back</button>
 </div>

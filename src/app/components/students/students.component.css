@@ -1,105 +1,64 @@
+/* Students component uses global styles from styles.css */
+/* Override container styling if needed */
 .container {
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  border: 2px solid #d4af37; /* Gold border */
-  margin-top: 20px;
+  background: var(--bg-primary);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 2px solid var(--accent-color);
+  margin-top: var(--spacing-lg);
 }
 
 .container h2 {
-  font-size: 24px;
-  color: #006666; /* Islamic green */
-  margin-bottom: 20px;
+  font-size: var(--font-size-xl);
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-lg);
   text-align: center;
-  font-weight: bold;
+  font-weight: var(--font-weight-bold);
 }
 
-/* Add Student Button */
-.btn-primary {
-  display: inline-block;
-  background-color: #006666;
-  color: white;
-  padding: 10px 15px;
-  font-size: 16px;
-  border: none;
-  border-radius: 8px;
-  text-decoration: none;
-  cursor: pointer;
-  transition: 0.3s;
+/* Search bar styling */
+.form-control {
+  padding: var(--spacing-md);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  transition: all var(--transition-fast);
 }
 
-.btn-primary:hover {
-  background-color: #004d4d;
-  transform: scale(1.05);
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 102, 102, 0.1);
 }
 
-/* Table Styles */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
+/* Row and column spacing */
+.row {
+  display: flex;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
 }
 
-table thead {
-  background-color: #006666;
-  color: white;
+.col-md-9, .col-md-3 {
+  display: flex;
+  flex: 1;
 }
 
-table th, table td {
-  padding: 12px;
-  text-align: center;
-  border: 1px solid #ddd;
+.col-md-3 {
+  flex: 0 0 auto;
 }
 
-table tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
+.pagination-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
 }
 
-table tbody tr:hover {
-  background-color: #f0fdf4; /* Light green hover */
-}
-
-/* Links inside table */
-table a {
-  color: #006666;
-  font-weight: bold;
-  text-decoration: none;
-}
-
-table a:hover {
-  text-decoration: underline;
-}
-
-/* Edit Button */
-.btn-warning {
-  background-color: #d4af37;
+.small-tag {
+  background: #17a2b8;
+  padding: 2px 6px;
+  font-size: 10px;
+  border-radius: 4px;
+  margin-left: 5px;
   color: #fff;
-  padding: 6px 10px;
-  border: none;
-  border-radius: 6px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.btn-warning:hover {
-  background-color: #b8902e;
-}
-
-/* Back Button */
-.back-btn {
-  display: inline-block;
-  background-color: #444;
-  color: white;
-  padding: 8px 14px;
-  font-size: 14px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.back-btn:hover {
-  background-color: #222;
 }

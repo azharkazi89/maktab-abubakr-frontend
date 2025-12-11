@@ -1,25 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { AttendanceService } from './attendance.service';
-import {Attendance, SchoolClass, Student} from "../models/all.models";
+import {Attendance, MaktabClass, Student} from "../models/all.models";
 import {ClassService} from "../classes/class.service";
 import {HttpErrorResponse} from "@angular/common/http";
 import {StudentService} from "../students/students.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import {BackButtonDirective} from "../commons/back-button.directive";
 
 @Component({
   selector: 'app-attendance-calendar',
   templateUrl: './attendance-calendar.component.html',
   styleUrls: ['./attendance-calendar.component.css'],
   standalone: true,
-  imports: [CommonModule,FormsModule]
+  imports: [CommonModule, FormsModule, BackButtonDirective]
 })
 export class AttendanceCalendarComponent implements OnInit {
   classes: any[] = []; // Fill from API
   students: any[] = []; // Fill from API
-  selectedClass: number | null = null;
-  selectedStudentId: number | null = null;
+  selectedClass: string ='';
+  selectedStudentId: number;
   currentYear = new Date().getFullYear();
   currentMonth = new Date().getMonth(); // 0-based
   monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
@@ -42,7 +43,7 @@ export class AttendanceCalendarComponent implements OnInit {
   }
 
   loadStudents() {
-    this.studentService.getAll().subscribe(
+    this.studentService.getAll({"page":1,"size":20}).subscribe(
       (data: Student[]) => {
         this.students = data;
       },
@@ -53,7 +54,7 @@ export class AttendanceCalendarComponent implements OnInit {
   }
   loadClasses(){
     this.classService.getAll().subscribe(
-      (data: SchoolClass[]) => {
+      (data: MaktabClass[]) => {
         this.classes = data;
       },
       (error: HttpErrorResponse) => {
@@ -82,7 +83,8 @@ export class AttendanceCalendarComponent implements OnInit {
   }
 
   filteredStudents() {
-    return this.students.filter(s => !this.selectedClass || s.schoolClass.id === this.selectedClass);
+    return this.students.filter(s => this.selectedClass === ''
+      || s.maktabClass.id.toString() === this.selectedClass);
   }
 
   loadAttendance(): void {
@@ -157,26 +159,28 @@ export class AttendanceCalendarComponent implements OnInit {
   }
 
   saveDayAttendance(): void {
-    // Here you can call a POST API to save attendance for selected day
+    // Exit early if required fields are missing
     if (!this.selectedStudentId || !this.selectedDay) return;
 
-    console.log('Saving attendance:', {
-      studentId: this.selectedStudentId,
-      date: this.selectedDay,
-      status: this.selectedStatus
-    });
     const formattedDate = this.formatDateOnly(this.selectedDay);
+    const existingAttendance = this.attendances?.find(
+      a => a.attendanceDate === formattedDate &&
+        a.studentId.toString() === this.selectedStudentId.toString()
+    );
 
-    const request = {"studentId":this.selectedStudentId,"date":formattedDate, "selectedStatus":this.selectedStatus};
+    const request = {
+      id: existingAttendance?.id ?? null,
+      studentId: this.selectedStudentId,
+      date: formattedDate,
+      selectedStatus: this.selectedStatus
+    };
 
-    this.attendanceService.saveAttendance(request).subscribe(value => {
-
+    this.attendanceService.saveAttendance(request).subscribe(() => {
+      this.loadAttendance();
+      this.closeDialog();
     });
-
-    // After save, refresh calendar
-    this.loadAttendance();
-    this.closeDialog();
   }
+
 
   formatDateOnly(date: Date): string {
     const year = date.getFullYear();

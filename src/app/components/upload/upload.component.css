@@ -1,84 +1,141 @@
-/* Container Styling */
+/* Upload component uses global styles from styles.css */
+
 .container {
   max-width: 90%;
-  background: #ffffff;
-  border-radius: 12px;
-  padding: 20px 25px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
-  border: 2px solid #d4af37; /* Gold border for Islamic touch */
-  font-family: 'Poppins', sans-serif;
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xl);
+  box-shadow: var(--shadow-md);
+  border: 2px solid var(--accent-color);
+  font-family: var(--font-family);
+  margin: var(--spacing-xl) auto;
 }
 
 /* Heading */
 h2 {
-  color: #146356; /* Islamic green */
-  font-weight: bold;
-  margin-bottom: 20px;
+  color: var(--primary-color);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--spacing-lg);
   text-align: center;
-  border-bottom: 2px solid #d4af37;
-  padding-bottom: 10px;
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: var(--spacing-md);
+  font-size: var(--font-size-xl);
 }
 
 /* File input */
 input[type="file"] {
-  border: 2px solid #146356;
-  border-radius: 8px;
-  padding: 10px;
-  font-size: 16px;
-  color: #146356;
+  border: 2px solid var(--primary-color);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-md);
+  font-size: var(--font-size-base);
+  color: var(--primary-color);
+  transition: all var(--transition-fast);
 }
 
 input[type="file"]::file-selector-button {
-  background-color: #146356;
-  color: white;
+  background-color: var(--primary-color);
+  color: var(--bg-primary);
   border: none;
-  padding: 8px 15px;
-  border-radius: 6px;
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: var(--radius-md);
   cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s ease;
+  font-weight: var(--font-weight-bold);
+  transition: all var(--transition-normal);
 }
 
 input[type="file"]::file-selector-button:hover {
-  background-color: #0f4330;
+  background-color: var(--primary-dark);
+  transform: scale(1.02);
 }
 
 /* Upload button */
 .btn.btn-primary {
-  background-color: #146356;
+  background-color: var(--primary-color);
   border: none;
-  font-weight: bold;
-  padding: 10px 20px;
-  font-size: 16px;
-  border-radius: 8px;
-  transition: background 0.3s ease, transform 0.2s;
+  font-weight: var(--font-weight-bold);
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: var(--font-size-base);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-normal);
+  color: var(--bg-primary);
 }
 
 .btn.btn-primary:hover {
-  background-color: #0f4330;
-  transform: scale(1.05);
+  background-color: var(--primary-dark);
+  transform: scale(1.02);
+  box-shadow: var(--shadow-md);
 }
 
 /* Progress bar */
 .progress {
   height: 12px;
   background-color: #e8f5f1;
-  border-radius: 8px;
+  border-radius: var(--radius-lg);
+  margin-bottom: var(--spacing-lg);
 }
 
 .progress-bar {
-  background-color: #d4af37;
-  font-size: 12px;
-  font-weight: bold;
-  color: #146356;
+  background: linear-gradient(90deg, var(--primary-color), var(--primary-light));
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--bg-primary);
 }
 
-/* Message text */
+/* Status Messages */
 p.mt-2 {
-  font-size: 14px;
-  font-weight: 500;
-  color: #333;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+  margin-top: var(--spacing-lg);
 }
+
+/* Success Message */
+.alert-success {
+  background-color: rgba(27, 158, 119, 0.1);
+  border: 1px solid var(--success-color);
+  color: var(--success-color);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Error Message */
+.alert-danger {
+  background-color: rgba(183, 28, 28, 0.1);
+  border: 1px solid var(--danger-color);
+  color: var(--danger-color);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    max-width: 95%;
+    padding: var(--spacing-lg);
+  }
+
+  h2 {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-md);
+  }
+}
+
+/* Upload Section */
+.upload-section {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  border-left: 4px solid #146356;
+}
+
+.upload-section h4 {
+  color: #146356;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
 
 /* Table styling */
 .table {
@@ -132,4 +189,160 @@ p.mt-2 {
 .back-btn:hover {
   background: #0f4330;
   color: #d4af37;
+}
+
+/* Modal Styling */
+.modal {
+  transition: all 0.3s ease;
+}
+
+.modal.show {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal content styling */
+.modal-content {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+  border-bottom: 2px solid #e9ecef;
+  border-radius: 12px 12px 0 0;
+}
+
+.modal-body {
+  padding: 2rem;
+  background: #f8f9fa;
+}
+
+/* Camera video element styling */
+video {
+  background-color: #000;
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Modal footer */
+.modal-footer {
+  border-top: 1px solid #e9ecef;
+  background: #f8f9fa;
+  padding: 1rem;
+  border-radius: 0 0 12px 12px;
+}
+
+.modal-footer .btn {
+  min-width: 100px;
+  padding: 0.5rem 1.5rem;
+  margin-left: 0.5rem;
+}
+
+.btn-close-white {
+  opacity: 0.8;
+}
+
+.btn-close-white:hover {
+  opacity: 1;
+}
+
+/* Button styling in modal */
+.btn.btn-secondary {
+  background-color: #6c757d;
+  border: none;
+  font-weight: bold;
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 6px;
+  transition: background 0.3s ease, transform 0.2s;
+  cursor: pointer;
+}
+
+.btn.btn-secondary:hover {
+  background-color: #5a6268;
+  transform: translateY(-2px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+    max-width: 100%;
+  }
+
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+
+  .modal-body {
+    padding: 1rem;
+  }
+
+  .photo-options {
+    gap: 8px;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 8px 15px;
+  }
+
+  .btn.btn-primary {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h4 {
+    font-size: 1rem;
+  }
+}
+
+/* Focus states for better accessibility */
+.btn:focus,
+input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+/* Text utility classes */
+.text-success {
+  color: #28a745 !important;
+}
+
+.text-danger {
+  color: #dc3545 !important;
+}
+
+.text-info {
+  color: #17a2b8 !important;
 }

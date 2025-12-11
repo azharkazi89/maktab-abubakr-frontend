@@ -9,10 +9,9 @@ export class TeacherService {
   private baseUrl = `${API_BASE}`+`/teacher/`;
   constructor(private http: HttpClient) {}
   getAll(): Observable<Teacher[]> { return this.http.get<Teacher[]>(this.baseUrl); }
-  get(id: number): Observable<Teacher> { return this.http.get<Teacher>(`${this.baseUrl}/${id}`); }
+  get(id: number): Observable<Teacher> { return this.http.get<Teacher>(`${this.baseUrl}${id}`); }
   create(dto: Teacher): Observable<Teacher> { return this.http.post<Teacher>(this.baseUrl, dto); }
-  update(id: number, dto: Teacher): Observable<Teacher> { return this.http.put<Teacher>(`${this.baseUrl}/${id}`, dto); }
-  delete(id: number): Observable<void> { return this.http.delete<void>(`${this.baseUrl}/${id}`); }
+  update(id: number, dto: Teacher): Observable<Teacher> { return this.http.put<Teacher>(`${this.baseUrl}${id}`, dto); }
 
   getTeachersByClass(classId: number) {
     return this.http.get<Teacher[]>(`${this.baseUrl}${classId}/getTeachersByClass`);

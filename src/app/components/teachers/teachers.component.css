@@ -1,125 +1,211 @@
-/* Main container */
+/* Teachers component uses global styles from styles.css */
+
 .container {
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  border: 2px solid #d4af37; /* Gold border */
-  margin-top: 20px;
+  background: var(--bg-primary);
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  border: 2px solid var(--accent-color);
+  margin-top: var(--spacing-lg);
 }
 
-/* Page Heading */
-.container h2 {
-  font-size: 24px;
-  color: #006666; /* Islamic green */
-  margin-bottom: 20px;
+.page-title {
+  font-size: var(--font-size-xl);
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-lg);
   text-align: center;
-  font-weight: bold;
+  font-weight: var(--font-weight-bold);
   text-transform: uppercase;
 }
 
-/* Add Teacher Button */
-.btn-primary {
+/* Add Class Button */
+.btn-add-class {
   display: inline-block;
-  background-color: #006666;
-  color: white;
-  padding: 10px 15px;
-  font-size: 16px;
+  background-color: var(--primary-color);
+  color: var(--bg-primary);
+  padding: var(--spacing-md) var(--spacing-lg);
+  font-size: var(--font-size-base);
   border: none;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   text-decoration: none;
   cursor: pointer;
-  transition: 0.3s;
+  transition: all var(--transition-normal);
+  font-weight: var(--font-weight-medium);
 }
 
-.btn-primary:hover {
-  background-color: #004d4d;
+.btn-add-class:hover {
+  background-color: var(--primary-dark);
   transform: scale(1.05);
 }
 
-/* Table Styling */
-table {
+/* Action Bar */
+.action-bar {
+  margin-bottom: var(--spacing-lg);
+  text-align: right;
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: flex-end;
+}
+
+/* Table Wrapper */
+.table-wrapper {
+  overflow-x: auto;
+  margin-bottom: var(--spacing-lg);
+}
+
+/* Form Group */
+.form-group {
+  margin-bottom: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-sm);
+  font-size: var(--font-size-base);
+}
+
+.form-group input,
+.form-group select {
+  padding: var(--spacing-md);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  transition: all var(--transition-fast);
+}
+
+.form-group input:focus,
+.form-group select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 102, 102, 0.1);
+}
+
+/* Modal Overlay - Uses global styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
 }
 
-table thead {
-  background-color: #006666;
-  color: white;
-  font-size: 16px;
+/* Modal Box - Uses global styles */
+.modal-box {
+  background: var(--bg-primary);
+  padding: var(--spacing-xl);
+  border-radius: var(--radius-lg);
+  width: 90%;
+  max-width: 500px;
+  box-shadow: var(--shadow-xl);
+  animation: fadeInScale 0.25s ease-in-out;
 }
 
-table th, table td {
-  padding: 12px;
-  text-align: center;
-  border: 1px solid #ddd;
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-table tbody tr:nth-child(even) {
-  background-color: #f9f9f9;
+/* Modal Header - Uses global styles */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+  border-bottom: 2px solid var(--accent-color);
+  padding-bottom: var(--spacing-md);
 }
 
-table tbody tr:hover {
-  background-color: #f0fdf4; /* Light green hover effect */
+.modal-header h3 {
+  font-size: var(--font-size-xl);
+  color: var(--primary-color);
+  margin: 0;
+  font-weight: var(--font-weight-bold);
 }
 
-/* Subjects cell */
-td span {
-  color: #444;
-  font-weight: 500;
-}
-
-/* Delete Button */
-.btn-danger {
-  background-color: #d9534f;
-  color: white;
-  padding: 6px 10px;
+.modal-header .btn-close {
+  background: none;
   border: none;
-  border-radius: 6px;
-  font-size: 14px;
+  font-size: var(--font-size-lg);
   cursor: pointer;
-  transition: 0.3s;
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
 }
 
-.btn-danger:hover {
-  background-color: #b52d2a;
+.modal-header .btn-close:hover {
+  color: var(--danger-color);
 }
 
-/* Back Button */
-app-back-button {
-  display: inline-block;
-  margin-top: 15px;
+/* Modal Content - Uses global styles */
+.modal-content {
+  margin-bottom: var(--spacing-lg);
 }
 
-.back-btn {
-  background-color: #444;
-  color: white;
-  padding: 8px 14px;
-  font-size: 14px;
+.modal-content ul {
+  margin: var(--spacing-lg) 0;
+  padding: 0;
+  list-style: none;
+}
+
+.modal-content li {
+  padding: var(--spacing-md) 0;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.modal-content input[type="text"],
+.modal-content input[type="number"],
+.modal-content input[type="time"] {
+  width: 100%;
+  padding: var(--spacing-md);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
+  transition: all var(--transition-fast);
+}
+
+.modal-content input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(0, 102, 102, 0.1);
+}
+
+/* Modal Footer - Uses global styles */
+.modal-footer {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: flex-end;
+  border-top: 1px solid var(--border-light);
+  padding-top: var(--spacing-lg);
+}
+
+/* Edit Class Button */
+.btn-edit-class {
+  background-color: var(--accent-color);
+  color: #fff;
+  padding: var(--spacing-sm) var(--spacing-md);
   border: none;
-  border-radius: 6px;
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
   cursor: pointer;
-  transition: 0.3s;
+  transition: all var(--transition-normal);
+  font-weight: var(--font-weight-medium);
 }
 
-.back-btn:hover {
-  background-color: #222;
+.btn-edit-class:hover {
+  background-color: var(--accent-dark);
+  transform: scale(1.05);
 }
 
-/* Responsive Table for Mobile */
-@media (max-width: 768px) {
-  table {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-  th, td {
-    font-size: 14px;
-    padding: 8px;
-  }
-  .btn-primary {
-    font-size: 14px;
-    padding: 8px 12px;
-  }
-}

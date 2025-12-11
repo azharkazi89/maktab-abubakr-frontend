@@ -1,0 +1,16 @@
+<div>
+  <label>Phone Numbers</label>
+  <input
+    type="text"
+    [(ngModel)]="newPhone"
+    placeholder="Enter phone (press Enter to add)"
+    (keyup.enter)="addPhone()"
+  />
+
+  <div class="chips">
+    <span *ngFor="let phone of phones; let i = index" class="chip">
+      {{ phone }}
+      <button (click)="removePhone(i)">x</button>
+    </span>
+  </div>
+</div>

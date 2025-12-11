@@ -1,7 +1,9 @@
 <div class="container mt-3">
 
   <div class="page-header">
-    <h2>Fees Management</h2>
+    <h2 class="page-title">💰 Fees Management</h2>
+    <h5>Total Fees Collected: Rs: {{calculateTotalFeesPaidAllStudents()}}/-</h5>
+    <h5>Total Fees Pending till date: Rs: {{calculateTotalFeesPendingAllStudents()}}/-</h5>
   </div>
 
   <!-- Filters -->
@@ -11,7 +13,7 @@
       <option *ngFor="let cls of classes" [value]="cls.id">{{cls.name}}</option>
     </select>
 
- <!--   <select [(ngModel)]="selectedMonth">
+    <!--<select [(ngModel)]="selectedMonth">
       <option value="">All Months</option>
       <option *ngFor="let m of months" [value]="m">{{m}}</option>
     </select>-->
@@ -20,13 +22,13 @@
       <option value="ALL">All Status</option>
       <option value="PAID">Paid</option>
       <option value="DUE">Due</option>
-      <option value="FISBILILLAH">Fi Sabilillah</option>
+      <option value="FI-SABILILLAH">Fi Sabilillah</option>
     </select>
     <input class="large-input" type="text" placeholder="Search by name, contact, roll no" [(ngModel)]="searchText">
   </div>
 
   <!-- Bulk actions -->
-  <div class="bulk-actions">
+ <div class="bulk-actions">
     <button class="action-btn paid" (click)="assignFees('PAID')">✔ Mark Selected as Paid</button>
     <button class="action-btn unpaid" (click)="assignFees('DUE')">✖ Mark Selected as Unpaid</button>
     <button class="action-btn notify" (click)="bulkNotifyParents()">📩 Notify Parents</button>
@@ -34,40 +36,46 @@
 
 
   <!-- Fees Table -->
-  <table class="fees-table">
-    <thead>
-    <tr>
-      <th><!--<input type="checkbox" [(ngModel)]="selectAll" (change)="toggleAllSelection()">--></th>
-      <th>Student Name</th>
-      <th>Class</th>
-      <th>Roll No</th>
-      <th>Phone</th>
-      <th>Total Fee</th>
-      <th>Total due</th>
-      <th>Status</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let s of filteredStudents(); let i = index">
-      <td>  <input type="checkbox"
-                   [checked]="selectedIds.has(s.id)"
-                   (change)="toggleSelection(s)"></td>
-      <td><a [routerLink]="['/student', s.id, 'fees']">{{ s.name }}</a></td>
-      <td>{{ s.schoolClass?.name }}</td>
-      <td>{{ s.rollNo }}</td>
-      <td>{{ s.phone }}</td>
-      <td>Rs. {{ calculateTotalFees(s) }}/-</td>
-      <td>Rs. {{ calculatePendingFees(s) }}/-</td>
-      <td>{{ markStatus(s) }}</td>
-    </tr>
-    </tbody>
-  </table>
-
-  <!-- Pagination -->
-  <div class="pagination">
-    <button (click)="prevPage()" [disabled]="currentPage===1">Prev</button>
-    <span>Page {{currentPage}} / {{totalPages}}</span>
-    <button (click)="nextPage()" [disabled]="currentPage===totalPages">Next</button>
+  <div class="table-wrapper">
+    <table class="fees-table">
+      <thead>
+      <tr>
+        <th>
+          <input type="checkbox" [(ngModel)]="selectAll" (ngModelChange)="toggleAllSelection()"></th>
+        <th>#</th>
+        <th>Student Name</th>
+        <th>Class</th>
+        <th>Phone</th>
+        <th>Admission Date</th>
+        <th>Total Fee Paid</th>
+        <th>Total Fee Pending</th>
+      </tr>
+      </thead>`
+      <tbody>
+      <tr *ngFor="let s of filteredStudents(); let i = index">
+        <td>  <input type="checkbox"
+                     [checked]="s.selected"
+                     (change)="toggleSelection(s)"></td>
+        <td>{{i+1}}</td>
+        <td><a [routerLink]="['/student', s.id, 'fees']">{{ s.name.replace('*', '') }}</a>
+          <span class="badge bg-info ms-1" *ngIf="s.name.endsWith('*')">EBC</span>
+        </td>
+        <td>{{ s.maktabClass?.name }}</td>
+        <td>{{ s.phone }}</td>
+        <td>{{s.admissionDate}}</td>
+        <td>Rs. {{ calculateTotalFeesPaid(s) }}/-</td>
+        <td>Rs. {{ calculateTotalFeesPending(s) }}/-</td>
+      </tr>
+      </tbody>
+    </table>
+    <div class="pagination-wrapper" *ngIf="totalPages > 1">
+      <app-pagination
+        [currentPage]="currentPage"
+        [totalPages]="totalPages"
+        (pageChange)="loadData($event)">
+      </app-pagination>
+    </div>
   </div>
-  <!--<app-back-button></app-back-button>-->
+
+  <button appBackButton class="btn-secondary">Back</button>
 </div>

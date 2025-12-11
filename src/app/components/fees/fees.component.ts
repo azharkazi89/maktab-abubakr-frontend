@@ -2,15 +2,13 @@ import {Component, OnInit} from '@angular/core';
 import {FeeService} from './fees.service';
 import {StudentService} from '../students/students.service';
 import {ClassService} from '../classes/class.service';
-import {
-  Fee, BatchFeeResponse, BatchFeeRequest, FeeResponse,
-  StudentFeeDTO, Student, SchoolClass
-} from '../models/all.models';
-import {HttpErrorResponse} from '@angular/common/http';
-import {HttpClient} from '@angular/common/http';
+import {BatchFeeRequest, BatchFeeResponse, Fee, FeeResponse, MaktabClass, Student} from '../models/all.models';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Router, RouterLink} from "@angular/router";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import {BackButtonDirective} from "../commons/back-button.directive";
+import { PaginationComponent } from '../commons/pagination.component';
 
 interface SelectableStudent extends Student {
   selected: boolean;
@@ -23,17 +21,17 @@ interface SelectableStudent extends Student {
   templateUrl: './fees.component.html',
   styleUrls: ['./fees.component.css'],
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink]
+  imports: [CommonModule, FormsModule, RouterLink, BackButtonDirective, PaginationComponent]
 })
 export class FeesComponent implements OnInit {
   DUE: string = 'Due';
   PAID: string = 'Paid';
 
   createdFees: FeeResponse[] = [];
-  students: Student[] = [];
+  students: SelectableStudent[] = [];
   message: string = '';
   fees: Fee[] = [];
-  classes: SchoolClass[] = [];
+  classes: MaktabClass[] = [];
   //classes: string[] = ['Class 1', 'Class 2', 'Class 3'];
   months: string[] = [
     'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
@@ -46,36 +44,37 @@ export class FeesComponent implements OnInit {
   rollNo: string = '';
   searchText: string = '';
 
-  currentPage: number = 1;
-  itemsPerPage: number = 10;
-  totalPages: number = 1;
+  currentPage = 0;
+  totalPages = 10;
+  totalItems: number;
+  pageSize: number = 20;
 
   //students: StudentFeeDTO[] = [];
   constructor(private feeService: FeeService, private studentService: StudentService,
               private classService: ClassService, private http: HttpClient, private router: Router) {
   }
 
-      ngOnInit(): void {
-    this.loadStudents();
+  ngOnInit(): void {
+    this.loadData(0);
     this.loadClasses();
-    this.totalPages = Math.ceil(this.students.length / this.itemsPerPage);
   }
 
   loadClasses() {
     this.classService.getAll().subscribe(
-      (data: SchoolClass[]) => {
+      (data: MaktabClass[]) => {
         this.classes = data;
       },
       (error: HttpErrorResponse) => {
         console.error('Error fetching students', error);
       }
     );
-    }
+  }
 
-  private loadStudents() {
-    this.studentService.getAll().subscribe(
-      (data: Student[]) => {
+  loadData(page: number) {
+    this.studentService.getAll({"page":page,"size":300}).subscribe(
+      (data: SelectableStudent[]) => {
         this.students = data;
+        //this.filteredStudents();
       },
       (error: HttpErrorResponse) => {
         console.error('Error fetching students', error);
@@ -83,24 +82,19 @@ export class FeesComponent implements OnInit {
     );
   }
 
-  filteredStudents(): Student[] {
-    return this.students
-      .filter((s: Student) =>
-        (this.selectedClass === '' || (s.schoolClass?.id?.toString() ?? '') === this.selectedClass) &&
-        (this.searchText === '' ||
-          s.name.toLowerCase().includes(this.searchText.toLowerCase()) ||
-          s.phone?.toString().toLowerCase().includes(this.searchText.toLowerCase()) ||
-          s.rollNo.toLowerCase().includes(this.searchText.toLowerCase())) &&
-        s.rollNo.toLowerCase().includes(this.searchText.toLowerCase()) &&
-      (
-        s.fees == null || s.fees.length === 0 ||
-        s.fees.some(fee =>
-          this.markStatus(s).toUpperCase() === this.selectedStatus.toUpperCase() ||
-          this.selectedStatus.toUpperCase() === 'ALL'
-        )
-      )
-      )
-      .slice((this.currentPage - 1) * this.itemsPerPage, this.currentPage * this.itemsPerPage);
+  filteredStudents(): SelectableStudent[] {
+    const lower = this.searchText.toLowerCase();
+    return this.students.filter((s: SelectableStudent) => {
+      const matchesClass = this.selectedClass === '' || s.maktabClass.id.toString() === this.selectedClass;
+      const matchesStatus = this.selectedStatus === 'ALL' || this.getStatus(s) === this.selectedStatus;
+      const matchesSearch =
+        s.name.toLowerCase().includes(lower) ||
+        s.guardianName.toLowerCase().includes(lower) ||
+        s.surName.toLowerCase().includes(lower) ||
+        s.phone?.toLowerCase().includes(lower);
+
+      return matchesClass && matchesStatus && matchesSearch;
+    });
   }
 
   prevPage() {
@@ -110,18 +104,13 @@ export class FeesComponent implements OnInit {
   nextPage() {
     if (this.currentPage < this.totalPages) this.currentPage++;
   }
-/*
-  toggleFeeStatus(fee: Fee) {
-    if (fee.status === 'unpaid') fee.status = 'paid';
-    else if (fee.status === 'paid') fee.status = 'unpaid';
-    else if (fee.status === 'fi-sabilillah') fee.status = 'paid';
-  }
 
   selectAll: boolean = false;
 
-  /!* toggleAllSelection() {
-    (this.filteredStudents() as SelectableStudent[]).forEach((s: SelectableStudent) => (s.selected = s.selectAll));
-  } *!/
+  toggleAllSelection() {
+    this.selectAll = !this.selectAll;
+    (this.students as SelectableStudent[]).forEach((s: SelectableStudent) => (s.selected = this.selectAll));
+  }
 
   bulkUpdateStatus(status: 'paid' | 'unpaid') {
     (this.filteredStudents() as SelectableStudent[]).forEach(s => {
@@ -138,7 +127,7 @@ export class FeesComponent implements OnInit {
       return;
     }
     alert('Notification sent to parents of: ' + selectedStudents.join(', '));
-  }*/
+  }
 
   selectedIds = new Set<number>();
 
@@ -151,7 +140,7 @@ export class FeesComponent implements OnInit {
 
     this.feeService.assignFees(request).subscribe(
       (res: BatchFeeResponse) => {  // <-- type the response
-        this.loadStudents();
+        this.loadData(0);
       },
       (err: HttpErrorResponse) => { // <-- type the error
         console.error('Error assigning fees:', err.message);
@@ -168,43 +157,49 @@ export class FeesComponent implements OnInit {
     }
   }
 
-  getMonthsPassed(admissionDate: string | Date): number {
-    const admission = new Date(admissionDate);
-    const today = new Date();
-
-    let months = (today.getFullYear() - admission.getFullYear()) * 12;
-    months += today.getMonth() - admission.getMonth();
-
-    // if current day is before admission day → subtract 1 month
-    if (today.getDate() < admission.getDate()) {
-      months--;
-    }
-
-    return months < 0 ? 0 : months;
+  getStatus(s: Student): string {
+    const totalPaid = this.calculateTotalFeesPaid(s);
+    const totalPending = this.calculateTotalFeesPending(s);
+    return totalPaid - totalPending < 0 ? "DUE" : "PAID";
   }
 
-  markStatus(s: Student): string {
-    const totalPaid = this.calculateTotalPaid(s);
-    const totalPending = this.calculateTotalFees(s);
-    return totalPaid-totalPending < 0 ? this.DUE : this.PAID;
-  }
+  /*
   calculateTotalPaid(student: Student): number {
     return (student.fees || [])
       .filter(f => f.status && f.status.toUpperCase() === 'PAID')
       .reduce((sum, f) => sum + (Number(f.paidAmount) || Number(f.paidAmount) || 0), 0);
+  }*/
+  calculateTotalFeesPaid(student: Student): number {
+    return student.fees.reduce((sum, fee) => sum + fee.paidAmount, 0);
   }
 
-    calculateTotalFees(student: Student): number {
-    const months = this.getMonthsPassed(student.admissionDate);
-    const monthlyFee = Number(200) || 0;
-    return months * monthlyFee;
+  calculateTotalFeesPaidAllStudents(): number {
+    let totalSum = 0;
+    this.students.forEach(student => {
+      totalSum += this.calculateTotalFeesPaid(student);
+    })
+    return totalSum;
   }
 
-  calculatePendingFees(student: Student): number {
-    const totalFees = this.calculateTotalFees(student) || 0;
-    const totalPaid = this.calculateTotalPaid(student) || 0;
-    return totalFees - totalPaid;
+  calculateTotalFeesPendingAllStudents(): number {
+    let totalSum = 0;
+    this.students.forEach(student => {
+      totalSum += this.calculateTotalFeesPending(student);
+    })
+    return totalSum;
   }
+
+  calculateTotalFeesPending(student: Student): number {
+    return student.fees.filter(value => {
+      return value.status.toUpperCase() === 'UNPAID';
+    }).reduce((sum, fee) => sum + fee.paidAmount - 300, 0);
+  }
+
+  /*calculateTotalFeesPending(student: Student): number {
+    const months = this.feeService.getMonthsPassed(student.admissionDate);
+    const monthlyFee = 300;
+    return (months * monthlyFee) - this.calculateTotalFeesPaid(student)<0?0:(months * monthlyFee) - this.calculateTotalFeesPaid(student);
+  }*/
 
   bulkNotifyParents() {
     const payload = {};

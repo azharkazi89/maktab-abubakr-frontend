@@ -1,0 +1,427 @@
+/* Student Details component uses global styles from styles.css */
+
+.container {
+  font-family: var(--font-family);
+}
+
+/* Tile styling */
+.islamic-tile {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  background-color: var(--bg-primary);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: all var(--transition-normal);
+  border: 1px solid rgba(0, 102, 102, 0.1);
+}
+
+.islamic-tile:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--accent-color);
+}
+
+/* Tile header styling */
+.tile-header {
+  font-weight: var(--font-weight-bold);
+  border-top-left-radius: var(--radius-lg);
+  border-top-right-radius: var(--radius-lg);
+  font-size: var(--font-size-lg);
+  background-color: var(--primary-color);
+  color: var(--bg-primary);
+}
+
+.tile-header.bg-success {
+  background-color: var(--success-color);
+}
+
+.tile-header.bg-warning {
+  background-color: var(--warning-color);
+  color: var(--text-primary);
+}
+
+.tile-header.bg-info {
+  background-color: var(--info-color);
+  color: var(--bg-primary);
+}
+
+/* Tile body styling */
+.tile-body {
+  padding: var(--spacing-lg);
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.tile-body p {
+  margin-bottom: var(--spacing-md);
+  color: var(--text-primary);
+}
+
+.tile-body p strong {
+  color: var(--primary-color);
+  font-weight: var(--font-weight-bold);
+}
+
+/* Table styling */
+.islamic-table th,
+.islamic-table td {
+  vertical-align: middle;
+  padding: var(--spacing-md);
+}
+
+.islamic-table thead {
+  background-color: var(--primary-color);
+  color: var(--bg-primary);
+  font-size: var(--font-size-base);
+}
+
+/* Button styling */
+.btn {
+  min-width: 120px;
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-normal);
+  border-radius: var(--radius-md);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--bg-primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+  border-color: var(--primary-dark);
+}
+
+.btn-outline-primary {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: var(--bg-primary);
+}
+
+.btn-outline-info {
+  color: var(--info-color);
+  border-color: var(--info-color);
+}
+
+.btn-outline-info:hover {
+  background-color: var(--info-color);
+  border-color: var(--info-color);
+  color: var(--bg-primary);
+}
+
+.btn-sm {
+  padding: var(--spacing-sm) var(--spacing-md);
+  font-size: var(--font-size-sm);
+}
+
+/* Spacing utilities */
+.mb-4 {
+  margin-bottom: var(--spacing-xl) !important;
+}
+
+.g-4 {
+  gap: var(--spacing-xl) !important;
+}
+
+.mt-3 {
+  margin-top: var(--spacing-lg) !important;
+}
+
+.mt-2 {
+  margin-top: var(--spacing-md) !important;
+}
+
+/* Image styling */
+.tile-body img {
+  max-height: 200px;
+  width: auto;
+  border-radius: var(--radius-md);
+}
+
+/* Spinner styling */
+.spinner-border-sm {
+  width: 0.9rem;
+  height: 0.9rem;
+  border-width: 0.15em;
+}
+
+/* Text utilities */
+.text-muted {
+  color: var(--text-muted) !important;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .islamic-tile {
+    min-height: 350px;
+  }
+}
+.tile-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.tile-body::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+/* Islamic color palette overrides */
+.bg-info {
+  background-color: #17a2b8 !important; /* Info blue */
+}
+
+.bg-success {
+  background-color: #28a745 !important; /* Green */
+}
+
+.bg-warning {
+  background-color: #ffc107 !important; /* Yellow */
+}
+
+.bg-primary {
+  background-color: #007bff !important; /* Primary blue */
+}
+
+/* Modal Styling */
+.modal {
+  transition: all 0.3s ease;
+}
+
+.modal.show {
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal-backdrop {
+  background-color: rgba(0, 0, 0, 0.5);
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Modal content styling */
+.modal-content {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+  border-bottom: 2px solid #e9ecef;
+  border-radius: 12px 12px 0 0;
+}
+
+.modal-body {
+  padding: 2rem;
+}
+
+/* Form styling in modal */
+.form-control,
+.form-select {
+  border-radius: 6px;
+  border: 1px solid #dee2e6;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus,
+.form-select:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.form-label {
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+/* Camera video element styling */
+video {
+  background-color: #000;
+  border-radius: 8px;
+  display: block;
+  margin: 0 auto;
+  width: 100%;
+  height: auto;
+  max-height: 400px;
+  object-fit: cover;
+}
+
+/* Button styling in modal footer */
+.modal-footer .btn {
+  min-width: 100px;
+  padding: 0.5rem 1.5rem;
+}
+
+.btn-close-white {
+  opacity: 0.8;
+}
+
+.btn-close-white:hover {
+  opacity: 1;
+}
+
+/* Modal gap styling for photo options */
+.gap-2 {
+  gap: 0.5rem !important;
+}
+
+/* Photo preview in modal */
+.photo-preview-box {
+  background: #e8f5f1;
+  padding: 15px;
+  border-radius: 8px;
+  border: 2px dashed #17a2b8;
+}
+
+.photo-preview-box img {
+  border: 2px solid #dee2e6;
+  padding: 0.5rem;
+  background-color: #f8f9fa;
+}
+
+/* Photo Button Group Styling */
+.button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  max-width: 180px;
+}
+
+.button-group .btn {
+  width: 100%;
+  font-size: 13px;
+  padding: 7px 12px;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+}
+
+.button-group .btn-outline-primary {
+  color: #007bff;
+  border-color: #007bff;
+}
+
+.button-group .btn-outline-primary:hover {
+  background-color: #007bff;
+  border-color: #007bff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+.button-group .btn-outline-info {
+  color: #17a2b8;
+  border-color: #17a2b8;
+}
+
+.button-group .btn-outline-info:hover {
+  background-color: #17a2b8;
+  border-color: #17a2b8;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+}
+
+.button-group .btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Responsive adjustments for button group */
+@media (max-width: 768px) {
+  .button-group {
+    max-width: 100%;
+  }
+}
+
+/* Responsive adjustments for modals */
+@media (max-width: 768px) {
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+
+  .modal-body {
+    padding: 1rem;
+  }
+
+  .form-label {
+    font-size: 0.9rem;
+  }
+
+  .btn {
+    min-width: auto;
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+/* Utility classes for better spacing */
+.text-center {
+  text-align: center;
+}
+
+/* Focus states for better accessibility */
+.btn:focus,
+.form-control:focus,
+.form-select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+.bg-secondary {
+  background-color: #6c757d !important;
+}
+
+.text-white {
+  color: #ffffff !important;
+}
+
+.text-dark {
+  color: #343a40 !important;
+}
+
+/* Optional: Make the entire tile clickable */
+.tile-body p {
+  margin-bottom: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  .tile {
+    min-height: auto;
+  }
+}

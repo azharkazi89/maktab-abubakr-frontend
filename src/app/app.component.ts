@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {Router, RouterModule} from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';
 import {CommonModule} from "@angular/common";
+import {SendMessageComponent} from "./components/whatsapp/send-message.component";
 
 @Component({
   selector: 'app-root',
@@ -11,10 +12,12 @@ import {CommonModule} from "@angular/common";
   imports: [
     CommonModule,
     RouterModule,
-    NavbarComponent
+    NavbarComponent,
+    SendMessageComponent
   ]
 })
 export class AppComponent {
+  title: "Anjuman Hazrat Abu Bakr Siddique (radiallahu anhu)";
   constructor(private router: Router) {}
 
   isLoginPage(): boolean {

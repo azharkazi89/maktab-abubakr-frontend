@@ -2,22 +2,25 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { StudentService } from '../students/students.service';
-import { Fee, Student } from '../models/all.models';
+import {Fee, FeeDTO, Student, StudentFeeDTO} from '../models/all.models';
 import {FeeService} from "./fees.service";
 import {CommonModule} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import {BackButtonDirective} from "../commons/back-button.directive";
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-student-fee-details',
   templateUrl: './fee-details.component.html',
   styleUrls: ['./fee-details.component.css'],
   standalone: true,
-  imports: [CommonModule,FormsModule]
+  imports: [CommonModule, FormsModule, BackButtonDirective]
 })
 export class StudentFeeDetailsComponent implements OnInit {
   studentId!: number;
-  student!: Student;
-  fees: Fee[] = [];
+  student: StudentFeeDTO;
+  fees: FeeDTO[] = [];
+  allFees: FeeDTO[] = [];
   PAID: string='PAID';
   constructor(private route: ActivatedRoute, private router: Router, private studentService: StudentService,
               private feeService: FeeService) {}
@@ -27,20 +30,43 @@ export class StudentFeeDetailsComponent implements OnInit {
     this.getStudentFees();
   }
 
+  loadFees() {
+    // Assuming `fees` is already populated from backend
+    this.allFees = this.months.map(month => {
+      const fee = this.fees.find(f => f.month === month);
+      if (fee) {
+        return { ...fee }; // clone so we don't mutate original accidentally
+      } else {
+        return {
+          id: undefined,
+          month: month,
+          year: new Date().getFullYear(),
+          paymentDate: null,
+          paidAmount: 0,
+          status: 'UNPAID',
+          recordedBy: '',
+          paymentMode: 'PENDING',
+          remark: '',
+          studentId: this.studentId
+        } as FeeDTO;
+      }
+    });
+  }
   getStudentFees(): void {
-    this.studentService.get(this.studentId).subscribe(student => {
+    this.feeService.getStudentFees(this.studentId).subscribe(student => {
       this.student = student;
-      this.fees = student.fees; // assuming student object has fees list
+      this.fees = student.fees;
+      this.loadFees();
     });
   }
 
   months: string[] = [
-    'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'
+    'June', 'July', 'Aug', 'Sept', 'Oct', 'Nov', 'Dec','Jan', 'Feb', 'March', 'April', 'May'
   ];
   notifyParents() {
      const phone = this.student.phone;
       const msg = `Assalamu Alaikum,\n` +
-                  `This is a fee reminder for ${this.student.name}.\n` +
+                  `This is a fee reminder for ${this.student.studentName}.\n` +
                   //(fee.status ? `Pending amount: ₹${fee.totalAmount}.\n` : '') +
                   `Please contact the office if already paid.\n` +
                   `JazakAllah Khair.\n` +
@@ -49,55 +75,92 @@ export class StudentFeeDetailsComponent implements OnInit {
       const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
       window.open(url, '_blank'); // Opens WhatsApp Web / mobile app
   }
-  newFee: Fee = {
-    id:0,
-    studentId:0,
-    month: 'January',
-    year: new Date().getFullYear(),
-    paidAmount: 0,
-    status: 'PAID',
-    paymentDate: new Date(),
-    dueDate: new Date(),
-    paymentMode: 'CASH',
-    recordedBy: '',
-    remark: ''
-  };
-  isEditing:boolean;
-  addFee(f:Fee) {
-    f.studentId = this.studentId;
-    if (f) {
-      this.feeService.create(f).subscribe(savedFee => {
-        this.fees.push(savedFee); // update local table
-        this.newFee = {
-          dueDate: new Date,
-          id: 0,
-          month: "",
-          paidAmount: 0,
-          paymentDate: new Date(),
-          paymentMode: "",
-          recordedBy: "",
-          remark: "",
-          status: "",
-          studentId: 0,
-          year: 0
-        };
-      });
+  /*addFee() {
+    const newFees = this.allFees;/!*.filter(
+      f => !f.id && (f.paidAmount && f.paidAmount > 0 || f.status !== 'UNPAID')
+    );*!/
+
+    if (newFees.length === 0) {
+      alert('No new fees to save.');
+      return;
     }
+
+    const calls = newFees.map(f => this.feeService.create(f, this.studentId));
+
+    forkJoin(calls).subscribe({
+      next: () => {
+        alert('Fees saved successfully.');
+        this.getStudentFees();
+      },
+      error: err => {
+        console.error('Error saving fees', err);
+        alert('Error while saving fees.');
+      }
+    });
+  }
+*/
+  // ✅ UPDATE existing fee records (rows with id)
+  editFee() {
+    const existingFees = this.allFees;
+    /*const existingFees = this.allFees.filter(f => !!f.id);
+
+    if (existingFees.length === 0) {
+      alert('No existing fees to update.');
+      return;
+    }*/
+
+    const calls = existingFees.map(f => this.feeService.updateFee(f));
+
+    forkJoin(calls).subscribe({
+      next: () => {
+        alert('Fees updated successfully.');
+        this.getStudentFees();
+      },
+      error: err => {
+        console.error('Error updating fees', err);
+        alert('Error while updating fees.');
+      }
+    });
   }
 
-  saveFee() {
+  // ✅ DELETE all existing fee records for this student
+ /* deleteFee() {
+    const existingFees = this.allFees.filter(f => !!f.id);
 
-  }
-
-  cancel() {
-    //this.newFee = null;
-  }
-  deleteFee(fee: Fee) {
-    const confirmDelete = confirm(`Are you sure you want to delete the fee for ${this.student.name}?`);
-    if (confirmDelete) {
-      this.feeService.delete(fee.id).subscribe(Event => {
-        this.fees = this.fees.filter(d => d.id !== fee.id);
-      });
+    if (existingFees.length === 0) {
+      alert('No fees to delete.');
+      return;
     }
+
+    const confirmDelete = confirm(
+      `Are you sure you want to delete all fees for ${this.student.studentName}?`
+    );
+    if (!confirmDelete) {
+      return;
+    }
+
+    const calls = existingFees.map(f => this.feeService.delete(f.id!));
+
+    forkJoin(calls).subscribe({
+      next: () => {
+        alert('Fees deleted successfully.');
+        this.getStudentFees();
+      },
+      error: err => {
+        console.error('Error deleting fees', err);
+        alert('Error while deleting fees.');
+      }
+    });
+  }*/
+
+  calculateTotalFeesPaid(student: StudentFeeDTO): number {
+    return student.fees.reduce((sum, fee) => sum + fee.paidAmount, 0);
   }
+
+  calculateTotalFeesPending(student: StudentFeeDTO): number {
+    const months = this.feeService.getMonthsPassed(student.admissionDate);
+    const monthlyFee = 300;
+    return (months * monthlyFee) - this.calculateTotalFeesPaid(student)<0?0:(months * monthlyFee) - this.calculateTotalFeesPaid(student);
+  }
+
 }

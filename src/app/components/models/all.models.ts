@@ -3,13 +3,13 @@ export interface Student {
   id: number;
   name: string;
   surName: string;
-  rollNo: string;
-  schoolClass?: SchoolClass | null;
+  rollNo: number;
+  maktabClass?: MaktabClass | null;
   age: number;
-  gender: 'MALE' | 'FEMALE';
+  gender: 'Male' | 'Female';
   guardianName?: string;
   phone?: string;
-  image_path?: string;
+  imagePath?: string;
   fees: Fee[];
   status: string;
   admissionDate: string;
@@ -17,17 +17,15 @@ export interface Student {
   dateOfBirth?: string;
   fatherName?: string;
   surname?: string;
-  imagePath?: string;
   whatsapp?: string;
   classId?: number;
   address?: string;
   schoolName?: string;
   parentProfession?: string;
-  preferredTime?: string;
 }
 
-// src/app/models/school-class.model.ts
-export interface SchoolClass {
+// src/app/models/maktab-class.model.ts
+export interface MaktabClass {
   studentCount: number;
   timing: string;
   division: string;
@@ -40,17 +38,17 @@ export interface SchoolClass {
 
 // src/app/models/teacher.model.ts
 export interface Teacher {
+  maktabClass: MaktabClass;
   id?: number;
   fullName: string;
   phone?: string;
-  subject?: Subject[]; // ✅ make sure this exists and is an array
 }
 
 // src/app/models/subject.model.ts
 export interface Subject {
   id?: number;
   name: string;
-  classes?: SchoolClass[];
+  classes?: MaktabClass[];
   teacher?: Teacher[];
 }
 
@@ -98,14 +96,22 @@ export interface BatchFeeResponse {
 }
 
 export interface FeeDTO {
+  id: number;
   month: string;
-  amount: number;
+  year: number;
   status: string;
+  paymentDate: Date;
+  paymentMode: string;
+  recordedBy: string;
+  remark: string;
+  paidAmount: number;
 }
 
 export interface StudentFeeDTO {
   studentName: string;
   studentClass: string;
+  phone: string;
+  admissionDate: string;
   fees: FeeDTO[];
 }
 
@@ -125,8 +131,65 @@ export interface ManualData {
   preferredTiming: string;
   admissionDate: string;
   teacherName: string;
-  schoolClass: string;
+  maktabClass: string;
   feesDetail: string;
   division: string;
   dataJson?: string;
+}
+
+export interface AttendanceSummary {
+  total: number;
+  attended: number;
+  absent: number;
+}
+
+export interface ApplicationResponse {
+  title: string;
+  appName: string;
+  version: string;
+  description: string;
+}
+
+// src/app/models/teacher-salary.model.ts
+export interface TeacherSalary {
+  id?: number;
+  teacher: Teacher;
+  teacherId: number;
+  amount: number;
+  salaryMonth: Date | string;
+  paymentDate?: Date | string;
+  paid: boolean;
+  remarks?: string;
+}
+
+export interface AppNotification {
+  message: string;
+  type: 'success' | 'error' | 'info' | 'warning';
+}
+
+export interface ReportRow {
+  id: number;
+  studentId: number;
+  phone: string;
+  studentFullName: string;
+  className: string;
+  month: string;
+  status: string;
+  remark: string;
+  paidAmount: number;
+  dueAmount: number;
+}
+
+export interface ReportResponse {
+  data: ReportRow[];
+  currentPage: number;
+  totalPages: number;
+  pageSize: number;
+  totalItems: number;
+}
+
+export interface ColumnConfig {
+  key: keyof ReportRow | 'index';   // 'index' for serial no
+  header: string;
+  selected: boolean;
 }

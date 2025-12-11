@@ -1,0 +1,196 @@
+/* Container Styling */
+.container {
+  max-width: 90%;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px 25px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+  border: 2px solid #d4af37; /* Gold border for Islamic touch */
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Heading */
+h2 {
+  color: #146356; /* Islamic green */
+  font-weight: bold;
+  margin-bottom: 20px;
+  text-align: center;
+  border-bottom: 2px solid #d4af37;
+  padding-bottom: 10px;
+}
+
+/* File input */
+input[type="file"] {
+  border: 2px solid #146356;
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 16px;
+  color: #146356;
+}
+
+input[type="file"]::file-selector-button {
+  background-color: #146356;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s ease;
+}
+
+input[type="file"]::file-selector-button:hover {
+  background-color: #0f4330;
+}
+
+/* Upload button */
+.btn.btn-primary {
+  background-color: #146356;
+  border: none;
+  font-weight: bold;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  transition: background 0.3s ease, transform 0.2s;
+}
+
+.btn.btn-primary:hover {
+  background-color: #0f4330;
+  transform: scale(1.05);
+}
+
+/* Progress bar */
+.progress {
+  height: 12px;
+  background-color: #e8f5f1;
+  border-radius: 8px;
+}
+
+.progress-bar {
+  background-color: #d4af37;
+  font-size: 12px;
+  font-weight: bold;
+  color: #146356;
+}
+
+/* Message text */
+p.mt-2 {
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* Upload Section */
+.upload-section {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  border-left: 4px solid #146356;
+}
+
+.upload-section h4 {
+  color: #146356;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+/* Table styling */
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  margin-top: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table thead {
+  background: #146356;
+  color: white;
+  font-size: 16px;
+}
+
+.table th,
+.table td {
+  text-align: center;
+  padding: 10px;
+  font-size: 14px;
+  border-bottom: 1px solid #ddd;
+}
+
+.table tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+.table tbody tr:hover {
+  background-color: #e8f5f1;
+}
+
+/* Back Button */
+.action-buttons-left {
+  margin-top: 20px;
+}
+
+.back-btn {
+  background: #146356;
+  color: white;
+  border: 2px solid #d4af37;
+  padding: 8px 18px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.back-btn:hover {
+  background: #0f4330;
+  color: #d4af37;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px;
+    max-width: 100%;
+  }
+
+  .btn {
+    font-size: 14px;
+    padding: 8px 15px;
+  }
+
+  .btn.btn-primary {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  h4 {
+    font-size: 1rem;
+  }
+}
+
+/* Focus states for better accessibility */
+.btn:focus,
+input:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+/* Text utility classes */
+.text-success {
+  color: #28a745 !important;
+}
+
+.text-danger {
+  color: #dc3545 !important;
+}
+
+.text-info {
+  color: #17a2b8 !important;
+}
+

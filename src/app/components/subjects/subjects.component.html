@@ -1,37 +1,42 @@
 <div class="container mt-3">
-  <h2>Subjects</h2>
+  <h2 class="page-title">📚 Subjects</h2>
 
-  <button class="btn btn-primary mb-3" routerLink="/subjects/add">Add Subject</button>
+  <div class="action-bar">
+    <button class="btn-primary" routerLink="/subjects/add">➕ Add Subject</button>
+  </div>
 
-  <table class="table table-bordered table-striped">
-    <thead class="table-dark">
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Classes</th>
-      <th>Teachers</th>
-      <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let subject of subjects">
-      <td>{{ subject.id }}</td>
-      <td>{{ subject.name }}</td>
-      <td>
+  <div class="table-wrapper">
+    <table>
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Classes</th>
+        <th>Teachers</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let subject of subjects">
+        <td>{{ subject.id }}</td>
+        <td>{{ subject.name }}</td>
+        <td>
           <span *ngFor="let cls of subject.classes ?? []; let i = index">
             {{ cls.name }}<span *ngIf="i < (subject.classes?.length ?? 0) - 1">, </span>
           </span>
-      </td>
-      <td>
+        </td>
+        <td>
           <span *ngFor="let teacher of subject.teacher ?? []; let i = index">
             {{ teacher.fullName }}<span *ngIf="i < (subject.teacher?.length ?? 0) - 1">, </span>
           </span>
-      </td>
-      <td>
-        <!--<button class="btn btn-sm btn-info me-2" [routerLink]="['/subjects/edit', subject.id]">Edit</button>-->
-        <button class="btn btn-sm btn-danger" (click)="deleteSubject(subject.id!)">Delete</button>
-      </td>
-    </tr>
-    </tbody>
-  </table><!--<app-back-button></app-back-button>-->
+        </td>
+        <td>
+          <button class="btn-danger" (click)="deleteSubject(subject.id!)">🗑️ Delete</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <button appBackButton class="btn-secondary">Back</button>
 </div>

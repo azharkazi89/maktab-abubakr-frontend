@@ -1,41 +1,94 @@
-import { Injectable } from '@angular/core';
-import { Component, OnInit } from '@angular/core';
-import { TeacherService } from './teachers.service'; // correct path
-import { Teacher } from '../models/all.models';
-import {CommonModule} from "@angular/common";              // correct path
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {TeacherService} from './teachers.service';
+import {MaktabClass, Teacher} from '../models/all.models';
+import {CommonModule} from '@angular/common';
+import {ClassService} from "../classes/class.service";
+import {BackButtonDirective} from "../commons/back-button.directive";
 
 @Component({
   selector: 'app-teachers',
   templateUrl: './teachers.component.html',
   styleUrls: ['./teachers.component.css'],
   standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule, ReactiveFormsModule, BackButtonDirective]
 })
-export class TeacherListComponent implements OnInit {
-
+export class TeacherComponent implements OnInit {
   teachers: Teacher[] = [];
+  isTeacherModalOpen = false;
+  teacherModalMode: 'add' | 'edit' = 'add';
+  teacherForm!: FormGroup;
+  selectedTeacherId: number | null = null;
+  classes: MaktabClass[] = [];
 
-  constructor(private teacherService: TeacherService) { }
-
-  ngOnInit(): void {
-    this.loadTeachers();
+  constructor(private classService: ClassService, private teacherService: TeacherService, private fb: FormBuilder) {
   }
 
-  loadTeachers(): void {
-    this.teacherService.getAll().subscribe((data: Teacher[]) => {
-      this.teachers = data;
-    }, (error: any) => {
-      console.error('Error fetching teachers', error);
+  ngOnInit(): void {
+    this.loadClasses();
+    this.loadTeachers();
+    this.initForm();
+  }
+
+  loadClasses() {
+    this.classService.getAll().subscribe(value => {
+      this.classes = value;
     });
   }
 
-  deleteTeacher(id: number): void {
-    if (confirm('Are you sure you want to delete this teacher?')) {
-      this.teacherService.delete(id).subscribe(() => {
-        this.teachers = this.teachers.filter(t => t.id !== id);
-      }, (error: any) => {
-        console.error('Error deleting teacher', error);
+  loadTeachers(): void {
+    this.teacherService.getAll().subscribe(data => {
+      this.teachers = data;
+    });
+  }
+
+  initForm(): void {
+    this.teacherForm = this.fb.group({
+      fullName: ['', Validators.required],
+      phone: ['', Validators.required],
+      maktabClass: ['', Validators.required]
+    });
+  }
+
+  openTeacherModal(mode: 'add' | 'edit', teacher?: Teacher) {
+    this.teacherModalMode = mode;
+    this.isTeacherModalOpen = true;
+
+    if (mode === 'edit' && teacher) {
+      this.selectedTeacherId = teacher.id!;
+      this.teacherForm.patchValue({
+        fullName: teacher.fullName,
+        phone: teacher.phone//,
+        //maktabClass: teacher.maktabClass
+      });
+    } else {
+      this.teacherForm.reset();
+      this.selectedTeacherId = null;
+    }
+  }
+
+  closeTeacherModal() {
+    this.isTeacherModalOpen = false;
+    this.teacherForm.reset();
+  }
+
+  saveTeacher() {
+    if (this.teacherForm.invalid) return;
+
+    const teacherData = this.teacherForm.value;
+
+    if (this.teacherModalMode === 'add') {
+      this.teacherService.create(teacherData).subscribe(() => {
+        this.loadTeachers();
+        this.loadClasses();
+      });
+    } else if (this.teacherModalMode === 'edit' && this.selectedTeacherId) {
+      this.teacherService.update(this.selectedTeacherId, teacherData).subscribe(() => {
+        this.loadTeachers();
+        this.loadClasses();
       });
     }
+
+    this.closeTeacherModal();
   }
 }

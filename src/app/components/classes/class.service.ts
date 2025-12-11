@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { SchoolClass } from '../models/all.models'; // adjust path
+import { MaktabClass } from '../models/all.models'; // adjust path
 import { API_BASE } from '../_api-base';
 @Injectable({
   providedIn: 'root'  // makes it globally injectable
@@ -11,20 +11,20 @@ export class ClassService {
 
   constructor(private http: HttpClient) { }
 
-  getAll(): Observable<SchoolClass[]> {
-    return this.http.get<SchoolClass[]>(this.baseUrl);
+  getAll(): Observable<MaktabClass[]> {
+    return this.http.get<MaktabClass[]>(this.baseUrl);
   }
 
-  getById(id: number): Observable<SchoolClass> {
-    return this.http.get<SchoolClass>(`${this.baseUrl}${id}`);
+  getById(id: number): Observable<MaktabClass> {
+    return this.http.get<MaktabClass>(`${this.baseUrl}${id}`);
   }
 
-  create(schoolClass: SchoolClass): Observable<SchoolClass> {
-    return this.http.post<SchoolClass>(this.baseUrl, schoolClass);
+  create(maktabClass: MaktabClass): Observable<MaktabClass> {
+    return this.http.post<MaktabClass>(this.baseUrl, maktabClass);
   }
 
-  update(id: number, schoolClass: SchoolClass): Observable<SchoolClass> {
-    return this.http.put<SchoolClass>(`${this.baseUrl}${id}`, schoolClass);
+  update(id: number, maktabClass: MaktabClass): Observable<MaktabClass> {
+    return this.http.put<MaktabClass>(`${this.baseUrl}${id}`, maktabClass);
   }
 
   delete(id: number): Observable<void> {

@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://maktab-school.onrender.com'
+  apiUrl: 'https://maktab-abubakr.onrender.com'
 };

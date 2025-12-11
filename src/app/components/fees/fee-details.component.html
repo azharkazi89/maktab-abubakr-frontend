@@ -1,78 +1,64 @@
 <div class="fees-page">
   <div class="page-header">
-    <h2>Fee Details for {{ student?.name }}</h2>
+    <h2>Fee Details for {{ student?.studentName }}</h2>
+    <p><b>Note: Student Admission Date {{ student?.admissionDate }}</b></p>
+    <p><b>Total Fees Paid:</b> Rs. {{ calculateTotalFeesPaid(student) }}/-</p>
+    <p><b>Total Fees Pending:</b> Rs. {{ calculateTotalFeesPending(student) }}/-</p>
   </div>
 
-  <table class="fees-table" >
+  <table class="fees-table">
     <thead>
     <tr>
+      <th>#</th>
       <th>Month</th>
-      <th>Year</th>
-      <th>Status</th>
-      <th>Paid Amount</th>
       <th>Fees Paid Date</th>
-      <th>Fees Due Date</th>
-      <th>Payment Mode</th>
+      <th>Paid Amount</th>
+      <th>Status</th>
       <th>Received By</th>
+      <th>Payment Mode</th>
       <th>Comment</th>
-      <th>Action</th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let f of fees">
+    <tr *ngFor="let f of allFees; let i = index">
+      <td>{{ i + 1 }}</td>
       <td data-label="Month">{{ f.month }}</td>
-      <td data-label="Year">{{ f.year }}</td>
-      <td data-label="Status"
-          [ngClass]="{'paid': f.status === 'PAID', 'unpaid': f.status === 'DUE', 'fisabilillah': f.status === 'Fi Sabilillah'}">
-        {{ f.status }}
+      <td data-label="Payment Date">
+        <input type="date" [(ngModel)]="f.paymentDate" name="paymentDate{{i}}">
       </td>
-      <td data-label="Paid Amount">{{ f.paidAmount }}</td>
-      <td data-label="Payment Date">{{ f.paymentDate || 'Unpaid' }}</td>
-      <td data-label="Payment Due Date">{{ f.dueDate }}</td>
-      <td data-label="Payment Mode">{{ f.paymentMode }}</td>
-      <td data-label="Recorded By">{{ f.recordedBy }}</td>
-      <td data-label="Remark">{{ f.remark }}</td>
-      <td>
-        <button class="notify-btn" (click)="deleteFee(f)">Delete fee details</button>
+      <td data-label="Paid Amount">
+        <input type="number" [(ngModel)]="f.paidAmount" name="paidAmount{{i}}">
       </td>
-    </tr>
-   <tr>
-      <td>
-        <select [(ngModel)]="newFee.month" name="newstatus">
-          <option value="">All Months</option>
-          <option *ngFor="let m of months" [value]="m">{{m}}</option>
+      <td data-label="Status">
+        <select [(ngModel)]="f.status" name="status{{i}}">
+          <option value="PAID">Paid</option>
+          <option value="UNPAID">Un-paid</option>
+          <!--<option value="FISBILILLAH">Fi Sabilillah</option>-->
         </select>
       </td>
-      <td><input type="number" [(ngModel)]="newFee.year" name="newyear"></td>
-      <td>
-        <select [(ngModel)]="newFee.status" name="newstatus">
-          <option value="PAID">PAID</option>
-          <option value="DUE">DUE</option>
+      <td data-label="Received By">
+        <input type="text" [(ngModel)]="f.recordedBy" name="recordedBy{{i}}" autocomplete="off">
+      </td>
+      <td data-label="Payment Mode">
+        <select [(ngModel)]="f.paymentMode" name="paymentMode{{i}}">
+          <option value="ONLINE">ONLINE</option>
+          <option value="UPI">UPI</option>
+          <option value="CASH">CASH</option>
         </select>
       </td>
-      <td><input type="number" [(ngModel)]="newFee.paidAmount" name="newamount"></td>
-
-      <td><input type="date" [(ngModel)]="newFee.paymentDate" name="newPayment Date"></td>
-      <td><input type="date" [(ngModel)]="newFee.dueDate" name="newDue Date"></td>
-     <td>
-       <select [(ngModel)]="newFee.paymentMode" name="newPayment Mode">
-         <option value="ONLINE">ONLINE</option>
-         <option value="UPI">UPI</option>
-         <option value="CASH">CASH</option>
-         <option value="PENDING">PENDING</option>
-       </select>
-     </td>
-      <td><input [(ngModel)]="newFee.recordedBy" name="newRecorded By"></td>
-      <td><input [(ngModel)]="newFee.remark" name="newRemark"></td>
-      <td>
-        <button (click)="addFee(newFee)">Add</button>
+      <td data-label="Remark">
+        <input type="text" [(ngModel)]="f.remark" name="remark{{i}}" autocomplete="off">
       </td>
     </tr>
     </tbody>
+
   </table>
 
   <div class="action-buttons-left">
-    <!--<app-back-button></app-back-button>-->
+    <button appBackButton class="btn btn-secondary">Back</button>
     <button class="notify-btn" (click)="notifyParents()">Notify Parents/Guardian</button>
+    <!--<button class="btn-primary" (click)="addFee()">Save</button>-->
+    <button class="btn-secondary" (click)="editFee()">Save</button>
+    <!--<button class="bg-warning" (click)="deleteFee()">Delete</button>-->
   </div>
 </div>
